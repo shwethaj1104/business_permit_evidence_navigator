@@ -1,0 +1,57 @@
+flowchart TB
+    USER["Local user"]
+    UI["React frontend"]
+
+    USER --> UI
+    UI --> CHAT["Tab 1: Checklist Assistant"]
+    UI --> ADMIN["Tab 2: Knowledge Updates — open local UI"]
+
+    subgraph CHATFLOW["Answering questions — no web access"]
+        CHAT --> PROFILE["Select business profile"]
+        PROFILE --> READY{"All required selections complete?"}
+        READY -->|No| DISABLED["Keep chat disabled"]
+        READY -->|Yes| QUESTION["Send question / Generate checklist"]
+        QUESTION --> CHATAPI["FastAPI: Chat API"]
+        CHATAPI --> RETRIEVE["Filter by profile and retrieve approved evidence"]
+        RETRIEVE --> ENOUGH{"Enough relevant evidence?"}
+        ENOUGH -->|Missing user details| FOLLOWUP["Ask follow-up question"]
+        ENOUGH -->|Missing source evidence| GAP["Explain knowledge gap"]
+        ENOUGH -->|Yes| GENERATE["LLM generates structured answer"]
+        GENERATE --> CHECK["Validate citations and response structure"]
+        CHECK --> ANSWER["Show checklist, citations and source dates"]
+        FOLLOWUP --> CHAT
+        GAP --> CHAT
+        ANSWER --> CHAT
+    end
+
+    subgraph SYNCFLOW["Updating knowledge — manual trigger"]
+        ADMIN --> CLICK["Click Sync official sources"]
+        CLICK --> SYNCAPI["FastAPI: Validate profile and create sync job"]
+        SYNCAPI --> WORKER["Python ingestion worker"]
+        WORKER --> DISCOVER["Search approved official domains / Fetch registered URLs"]
+        DISCOVER --> EXTRACT["Extract text, tables and source dates"]
+        EXTRACT --> COMPARE{"Content changed?"}
+        COMPARE -->|No| CHECKED["Update last-checked timestamp"]
+        COMPARE -->|Yes| VERSION["Save new source version and section differences"]
+        VERSION --> EMBED["Create chunks and embeddings"]
+        EMBED --> SUMMARY["Generate short change summary"]
+        SUMMARY --> REVIEW["Review changes"]
+        REVIEW -->|Approve| PUBLISH["Activate approved version"]
+        REVIEW -->|Reject| RETAIN["Keep previous approved version active"]
+    end
+
+    DB[("MongoDB Atlas<br/>Records + text + embeddings<br/>GridFS source files")]
+
+    DB --> RETRIEVE
+    CHATAPI -->|Save conversation and citations| DB
+    DB -->|Existing source versions| WORKER
+    CHECKED --> DB
+    VERSION --> DB
+    EMBED --> DB
+    SUMMARY --> DB
+    PUBLISH --> DB
+    RETAIN --> DB
+    DB -->|Job progress and update history| ADMIN
+
+    FUTURE["Future enhancement: Scheduler — disabled in v1"]
+    FUTURE -.->|Reuse the same sync pipeline| SYNCAPI
