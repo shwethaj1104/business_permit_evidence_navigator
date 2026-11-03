@@ -19,7 +19,7 @@ export function App() {
             <BookOpenCheck size={23} />
           </span>
           <div>
-            <strong>Permit Navigator</strong>
+            <strong>Permit Navigator DEPLOYED CI/CD</strong>
             <span>UAE BUSINESS SETUP ASSISTANT</span>
           </div>
         </div>
