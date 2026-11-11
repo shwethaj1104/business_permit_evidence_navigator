@@ -1,6 +1,11 @@
+import logging
+import re
+
 from app.core.errors import AppError
 from app.core.logging import logged_operation
 from app.schemas.api import AnswerResponse, Citation
+
+logger = logging.getLogger(__name__)
 
 
 class ChatService:
@@ -38,30 +43,112 @@ class ChatService:
 
     @logged_operation("chat.answer")
     def send(self, request):
-        # Validate context and evidence before any paid generation.
-        if not request.message.strip():
+        # Enforce scope before retrieval and collect a complete profile inside one assistant turn.
+        question = request.message.strip()
+        if not question:
             raise AppError("Enter a question before sending.", 422)
-        if request.profile_id is None:
+        previous = self.conversations.get(request.conversation_id) if request.conversation_id else None
+        profile_id = request.profile_id or (previous.profile_id if previous else None)
+        profile = self.profiles.require(profile_id) if profile_id else None
+        if previous and previous.profile_id and previous.profile_id != profile_id:
+            raise AppError("Start a new conversation when the business profile changes.", 409)
+        history = (
+            [{"role": row["role"], "text": row["text"]} for row in previous.messages[-8:]] if previous else []
+        )
+        normalized = re.sub(r"[^a-z ]", "", question.lower()).strip()
+        greetings = {
+            "hi",
+            "hello",
+            "hey",
+            "hi there",
+            "hello there",
+            "good morning",
+            "good afternoon",
+            "good evening",
+            "thank you",
+            "thanks",
+            "how are you",
+        }
+        last_answer = previous.messages[-1].get("answer") or {} if previous and previous.messages else {}
+        offered_setup = last_answer.get("offers_setup", False) or (
+            "Would you like help preparing a business setup checklist?" in last_answer.get("message", "")
+        )
+        accepted_setup = offered_setup and normalized in {
+            "yes",
+            "yes please",
+            "sure",
+            "sure please",
+            "okay",
+            "ok",
+            "please",
+            "lets do it",
+            "lets start",
+            "absolutely",
+        }
+        declined_setup = offered_setup and normalized in {"no", "no thanks", "not now", "no thank you"}
+        if accepted_setup:
+            intent = "business_setup"
+        elif declined_setup:
+            intent = "decline"
+        elif normalized in greetings:
+            intent = "greeting"
+        else:
+            intent = self.model.classify_intent(
+                question, history, [row.model_dump() for row in self.profiles.list()]
+            )
+        if intent == "greeting":
             answer = AnswerResponse(
                 kind="follow_up",
-                message="Hello! Welcome to Permit Navigator, your UAE business setup assistant. "
-                "I can help prepare a checklist using reviewed official evidence. "
-                "Please choose the five business options below, then select Generate my checklist. "
-                "Our current pilot covers a new Dubai mainland IT/software company with an LLC structure.",
+                message="Hello! Welcome to Permit Navigator. I’m your UAE business permit assistant. "
+                "How can I help with your business setup today?",
+                items=[],
+                gaps=[],
+                citations=[],
+                offers_setup=True,
+            )
+        elif intent == "decline":
+            answer = AnswerResponse(
+                kind="follow_up",
+                message="No problem. I’m here whenever you need help with a UAE business permit or setup checklist.",
                 items=[],
                 gaps=[],
                 citations=[],
             )
-            return self.conversations.append(None, request.conversation_id, request.message, answer)
-        profile = self.profiles.require(request.profile_id)
-        history = []
-        if request.conversation_id:
-            previous = self.conversations.get(request.conversation_id)
-            if previous.profile_id is not None and previous.profile_id != profile.id:
-                raise AppError("Start a new conversation when the business profile changes.", 409)
-            history = [{"role": row["role"], "text": row["text"]} for row in previous.messages[-8:]]
-        if not self.knowledge.active_versions(profile.id):
+        elif intent not in {"business_setup", "permit_question"}:
             answer = AnswerResponse(
+                kind="gap",
+                message="I can’t assist with that request. I’m a business permit assistant and can only "
+                "help with UAE business setup, licensing and requirements supported by our reviewed "
+                "evidence collection. Would you like help preparing a business setup checklist?",
+                items=[],
+                gaps=[],
+                citations=[],
+                offers_setup=True,
+            )
+        elif profile is None:
+            answer = AnswerResponse(
+                kind="follow_up",
+                message="I’d be happy to help with your business setup. Please answer these five questions "
+                "so I can prepare a relevant checklist. Our current pilot covers a new mainland "
+                "IT/software company in any of the seven emirates with a provisional LLC structure; other setups are not supported yet.",
+                items=[],
+                gaps=[],
+                citations=[],
+                profile_questions=True,
+            )
+        else:
+            evidence_question = (
+                "Prepare an evidence-backed business setup checklist for my selected profile and identify missing evidence."
+                if accepted_setup
+                else question
+            )
+            answer = self.answer_from_evidence(profile, evidence_question, history)
+        return self.conversations.append(profile_id, request.conversation_id, question, answer)
+
+    def answer_from_evidence(self, profile, question, history):
+        # Generate licensing guidance only when relevant currently approved evidence exists.
+        if not self.knowledge.active_versions(profile.id):
+            return AnswerResponse(
                 kind="gap",
                 message="No approved evidence is available for this profile yet. "
                 "Open Knowledge Updates, sync official sources, and review a version first.",
@@ -69,38 +156,49 @@ class ChatService:
                 gaps=["No approved source versions."],
                 citations=[],
             )
-        else:
-            question = request.message.strip()
-            if not question:
-                raise AppError("Enter a question before sending.", 422)
-            vector = self.model.embed([question])[0]
-            evidence = self.knowledge.retrieve(profile.id, vector, question)
-            if not evidence:
-                answer = AnswerResponse(
-                    kind="gap",
-                    message="No relevant active evidence was retrieved.",
-                    items=[],
-                    gaps=["The current collection cannot support this answer."],
-                    citations=[],
-                )
-            else:
-                passages = [{"id": row.id, "text": row.text, "locator": row.locator} for row in evidence]
-                generated = self.model.answer(profile, question, passages, history)
-                answer = validate_answer(generated, evidence, self.knowledge)
-        return self.conversations.append(profile.id, request.conversation_id, request.message, answer)
+        vector = self.model.embed([question])[0]
+        evidence = self.knowledge.retrieve(profile.id, vector, question)
+        if not evidence:
+            return AnswerResponse(
+                kind="gap",
+                message="I can’t answer that from the approved evidence currently available.",
+                items=[],
+                gaps=["The current collection cannot support this answer."],
+                citations=[],
+            )
+        passages = [{"id": row.id, "text": row.text, "locator": row.locator} for row in evidence]
+        generated = self.model.answer(profile, question, passages, history)
+        return validate_answer(generated, evidence, self.knowledge)
 
 
 def validate_answer(generated, evidence, knowledge):
     # Reject unsupported citation IDs and recheck active versions after generation.
     by_id = {row.id: row for row in evidence}
     used = {citation for item in generated.items for citation in item.evidence_ids}
-    if generated.kind == "checklist" and (
-        not generated.items
-        or any(not item.evidence_ids for item in generated.items)
-        or not used <= by_id.keys()
-    ):
+    uncited = sum(not item.evidence_ids for item in generated.items)
+    unknown = len(used - by_id.keys())
+    if generated.kind == "checklist" and (not generated.items or uncited or unknown):
+        reasons = []
+        if not generated.items:
+            reasons.append("empty_checklist")
+        if uncited:
+            reasons.append("uncited_items")
+        if unknown:
+            reasons.append("unknown_evidence_ids")
+        logger.warning(
+            "event=evidence_validation_failed reasons=%s item_count=%d uncited_item_count=%d "
+            "unknown_id_count=%d retrieved_count=%d",
+            ",".join(reasons),
+            len(generated.items),
+            uncited,
+            unknown,
+            len(evidence),
+        )
         raise AppError("The generated checklist failed evidence validation. Please retry.", 502)
     if generated.kind != "checklist" and generated.items:
+        logger.warning(
+            "event=evidence_validation_failed reasons=inconsistent_kind item_count=%d", len(generated.items)
+        )
         raise AppError("The model returned inconsistent answer content. Please retry.", 502)
     active = set(knowledge.active_versions(evidence[0].profile_id))
     if any(by_id[key].version_id not in active for key in used):

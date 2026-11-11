@@ -1,0 +1,157 @@
+/* Comparison-only chrome; the three designs share business logic, not a visual template. */
+:root {
+  --preview-height: 0px;
+}
+html {
+  scroll-padding-top: 120px;
+}
+body {
+  margin: 0;
+  background: #f3f5f7;
+}
+.design-preview-chat {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.design-preview-updates {
+  min-height: 100dvh;
+}
+.design-comparison-bar {
+  height: var(--preview-height);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 6px 20px;
+  border-bottom: 1px solid #d9dfe6;
+  background: #f6f7f9;
+  color: #293b51;
+  font:
+    400 12px/1.4 'DM Sans',
+    sans-serif;
+}
+.comparison-label {
+  color: #596879;
+  font-size: 12px;
+}
+.design-options {
+  display: flex;
+  gap: 5px;
+}
+.design-options button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 6px 13px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #526274;
+  font: inherit;
+  cursor: pointer;
+}
+.design-options button[aria-pressed='true'] {
+  border-color: #b8c6d5;
+  background: #fff;
+  color: #183c61;
+  box-shadow: 0 1px 2px #183c6108;
+}
+.design-options button:hover {
+  background: #e9edf2;
+}
+.design-options button:focus-visible {
+  outline: 2px solid #315f8f;
+  outline-offset: 2px;
+}
+.design-number {
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  color: #596879;
+}
+.design-label-short {
+  display: none;
+}
+.design-root .source-date {
+  font-size: 12px;
+}
+.design-root .source-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  line-height: 1.5;
+  max-width: 100%;
+}
+.design-root .source-actions {
+  gap: 10px;
+}
+.design-root .source-stat strong,
+.design-root .skyline-count strong,
+.design-root .source-count,
+.design-root .version-count-badge {
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 760px) {
+  :root {
+    --preview-height: 0px;
+  }
+  .design-comparison-bar {
+    padding: 6px 10px;
+    gap: 0;
+    justify-content: center;
+  }
+  .comparison-label {
+    display: none;
+  }
+  .design-options {
+    width: 100%;
+    justify-content: center;
+    gap: 3px;
+  }
+  .design-options button {
+    padding: 7px 9px;
+    gap: 6px;
+    min-height: 34px;
+    font-size: 12px;
+  }
+  .design-label-full {
+    display: none;
+  }
+  .design-label-short {
+    display: inline;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .design-preview *,
+  .design-preview *::before,
+  .design-preview *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media print {
+  .design-comparison-bar {
+    display: none;
+  }
+  .design-preview-chat {
+    height: auto;
+    overflow: visible;
+  }
+}
+/* Keep long review pages free of overlay chrome; comparison controls stay at the page entry. */
+.design-preview-updates .design-comparison-bar {
+  position: relative;
+  top: auto;
+}
+
+/* Empty connection notices must not reserve space above workspace headings. */
+.design-root :is(.glass-notices, .concierge-notices, .console-notices):empty {
+  display: none;
+}

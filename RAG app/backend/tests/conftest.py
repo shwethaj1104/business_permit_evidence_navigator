@@ -28,5 +28,6 @@ def model(settings):
     result = Mock()
     result.settings = settings
     result.embed.side_effect = lambda texts: [[1.0, 0.0, 0.0] for _ in texts]
+    result.classify_intent.return_value = "permit_question"
     result.summarize.return_value = "A new official source was captured for review."
     return result

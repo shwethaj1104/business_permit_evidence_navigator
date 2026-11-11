@@ -168,3 +168,7 @@ The previous gpt-4.1-mini discovery request returned HTTP 400 because it does no
 ## On-demand Azure worker
 
 The API can now start a one-shot Azure Container Apps Job after saving a sync request. Set `SYNC_DISPATCH_MODE=azure` only after creating the cloud job and configuring the API managed identity. The default remains `local` so existing development commands continue to work. See [AZURE_SYNC_SETUP.md](AZURE_SYNC_SETUP.md) for setup, permissions, failure recovery, and one-shot local commands. No cloud resources are provisioned automatically.
+
+## Conversational workspace refresh
+
+New chat welcomes the user without profile fields. A business-setup request opens all five single-select radio questions in one assistant message, then the existing approved-evidence checklist flow continues. Knowledge Updates keeps its shared profile dropdowns. Chat messages scroll inside a viewport-sized workspace; knowledge content uses page scrolling. Simple greetings and yes/no responses to setup invitations need no model call. Other requests use a server-side intent check before retrieval, adding a model request and refusing unrelated topics. Deploy both frontend and backend for this response-contract update. See the development checklist for verification and remaining live semantic evaluation.

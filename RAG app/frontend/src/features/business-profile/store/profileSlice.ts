@@ -18,8 +18,10 @@ const profileSlice = createSlice({
     resetProfile() {
       return initialState;
     },
-    setProfile(_state, action: PayloadAction<Selection>) {
-      return action.payload;
+    setProfile(state, action: PayloadAction<Selection>) {
+      // Copy only editable fields, never profile IDs or descriptive server metadata.
+      for (const key of Object.keys(initialState) as ProfileField[])
+        state[key] = action.payload[key];
     },
     setField(state, action: PayloadAction<{ field: ProfileField; value: string }>) {
       state[action.payload.field] = action.payload.value;

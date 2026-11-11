@@ -1,3 +1,4 @@
+import { RequestActivity } from '../../../common/components/RequestActivity';
 import type { ConversationSummary } from '../../../common/types/api';
 import { MessageSquare } from 'lucide-react';
 import {
@@ -38,7 +39,11 @@ export function ChatHistory({
       <h3>
         <MessageSquare size={15} /> Saved chats
       </h3>
-      {isLoading && <p className="small muted">Loading saved chats…</p>}
+      {isLoading && (
+        <p className="small muted" role="status">
+          <RequestActivity text="Loading saved chats…" />
+        </p>
+      )}
       {(error || renameError || deleteError) && (
         <Notice error>{errorMessage(error || renameError || deleteError)}</Notice>
       )}

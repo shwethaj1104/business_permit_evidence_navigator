@@ -1,0 +1,675 @@
+/* Glass Workspace: frosted navigation, opaque reading surfaces and purposeful calm. */
+.design-root.executive-design {
+  --canvas: #edf2f5;
+  --surface: #fff;
+  --surface-soft: #f5f8fa;
+  --ink: #18303c;
+  --muted: #536874;
+  --primary: #214e65;
+  --accent: #397792;
+  --accent-ink: #285e77;
+  --accent-soft: #e8f1f6;
+  --edge: #d5e0e7;
+  --line: #dfe7ec;
+  --depth: #a6bdcb;
+  --green: #214e65;
+  --navy: #214e65;
+  --lime: #e8f1f6;
+  --tint-shadow: #274b6810;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  min-height: calc(100dvh - var(--preview-height, 48px));
+  background: radial-gradient(ellipse at 7% 2%, #d9e8ed, transparent 50%), #edf2f5;
+  color: var(--ink);
+  font:
+    14px/1.5 'DM Sans',
+    sans-serif;
+}
+.design-root.executive-design.chat-shell {
+  height: calc(100dvh - var(--preview-height, 48px));
+  overflow: hidden;
+}
+.design-root.executive-design h1,
+.design-root.executive-design h2,
+.design-root.executive-design h3,
+.design-root.executive-design h4 {
+  font-family: 'Manrope', sans-serif;
+  color: var(--ink);
+}
+.design-root.executive-design button,
+.design-root.executive-design input,
+.design-root.executive-design textarea {
+  font: inherit;
+}
+.design-root.executive-design button:focus-visible,
+.design-root.executive-design a:focus-visible,
+.design-root.executive-design input:focus-visible,
+.design-root.executive-design textarea:focus-visible,
+.design-root.executive-design summary:focus-visible {
+  outline: 2px solid #1b5878;
+  outline-offset: 3px;
+}
+.design-root.executive-design .glass-header {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  min-height: 76px;
+  flex-shrink: 0;
+  padding: 0 30px;
+  background: #f9fcfbbd;
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid #ffffffc9;
+}
+.design-root.executive-design .glass-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 255px;
+}
+.design-root.executive-design .glass-brand img {
+  border-radius: 9px;
+}
+.design-root.executive-design .glass-brand > div {
+  display: flex;
+  flex-direction: column;
+}
+.design-root.executive-design .glass-brand strong {
+  font-size: 16px;
+  letter-spacing: -0.025em;
+  font-weight: 650;
+}
+.design-root.executive-design .glass-brand span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.design-root.executive-design .glass-header nav {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #dce7ec80;
+  border: 1px solid #d2dfe6;
+  border-radius: 12px;
+  padding: 4px;
+}
+.design-root.executive-design .glass-header nav button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 17px;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.design-root.executive-design .glass-header nav button[aria-current='page'] {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 2px 5px #2a4f6710;
+  font-weight: 600;
+}
+.design-root.executive-design .glass-territory {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.09em;
+}
+.design-root.executive-design .glass-territory span {
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.design-root.executive-design .glass-skip {
+  position: absolute;
+  top: -100px;
+  left: 18px;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid var(--primary);
+  padding: 10px 14px;
+  border-radius: 5px;
+  color: var(--primary);
+}
+.design-root.executive-design .glass-skip:focus {
+  top: 8px;
+}
+.design-root.executive-design .glass-notices {
+  flex-shrink: 0;
+  padding: 10px 22px;
+}
+.design-root.executive-design .workspace {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  display: block;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  animation: none;
+}
+.design-root.executive-design .workspace-chat {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+.design-root.executive-design .workspace-updates {
+  min-height: calc(100dvh - var(--preview-height, 48px) - 76px);
+}
+.design-root.executive-design .glass-primary,
+.design-root.executive-design .glass-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  border-radius: 9px;
+  padding: 10px 15px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.design-root.executive-design .glass-primary {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  color: #fff;
+}
+.design-root.executive-design .glass-secondary {
+  background: #fff;
+  border: 1px solid #b8cbd7;
+  color: var(--primary);
+}
+.design-root.executive-design button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.design-root.executive-design .glass-icon-button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--primary);
+}
+.design-root.executive-design .glass-mobile-only {
+  display: none;
+}
+.design-root.executive-design .glass-crumb,
+.design-root.executive-design .glass-overline {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: #4f6c7b;
+}
+.design-root.executive-design .glass-overline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.design-root.executive-design .glass-chat {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  padding: 16px;
+  gap: 16px;
+}
+.design-root.executive-design .glass-conversations {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 19px 14px 15px;
+  border: 1px solid #fff;
+  border-radius: 16px;
+  background: #f4f9f7bf;
+  box-shadow: inset 0 1px 0 #fff;
+  backdrop-filter: blur(14px);
+}
+.design-root.executive-design .glass-rail-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 4px 20px;
+}
+.design-root.executive-design .glass-rail-heading > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4f6774;
+  font-size: 12px;
+  font-weight: 600;
+}
+.design-root.executive-design .glass-new-chat {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 41px;
+  border: 1px solid #b9ceda;
+  background: #fff;
+  color: var(--primary);
+  border-radius: 9px;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 13px;
+}
+.design-root.executive-design .glass-history-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.design-root.executive-design .saved-chats {
+  padding: 24px 0 16px;
+}
+.design-root.executive-design .saved-chats h3 {
+  color: #536874;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  margin: 0 8px 12px;
+}
+.design-root.executive-design .saved-chats .muted {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+.design-root.executive-design .saved-chat-row {
+  border-radius: 8px;
+}
+.design-root.executive-design .saved-chat-row.selected {
+  background: #dfeaf0;
+  box-shadow: none;
+}
+.design-root.executive-design .saved-chat,
+.design-root.executive-design .saved-chat strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+.design-root.executive-design .saved-chat {
+  padding: 11px 8px;
+}
+.design-root.executive-design .chat-actions summary {
+  color: #486674;
+}
+.design-root.executive-design .chat-actions-menu {
+  border-radius: 8px;
+  border-color: var(--edge);
+  box-shadow: 0 8px 24px #25485920;
+}
+.design-root.executive-design .glass-rail-foot {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  border-top: 1px solid #d6e2e8;
+  padding: 15px 5px 0;
+  color: #57707d;
+  font-size: 12px;
+}
+.design-root.executive-design .glass-rail-foot svg {
+  color: var(--primary);
+}
+.design-root.executive-design .glass-conversation {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #fff;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 9px 35px #254b6610;
+  overflow: hidden;
+}
+.design-root.executive-design .glass-thread-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 30px;
+  border-bottom: 1px solid #e4ebef;
+  flex-shrink: 0;
+}
+.design-root.executive-design .glass-thread-heading h2 {
+  margin: 4px 0 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.design-root.executive-design .glass-thread-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.design-root.executive-design .glass-thread-meta > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.design-root.executive-design .glass-message-scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 30px max(30px, calc((100% - 900px) / 2));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.design-root.executive-design .glass-message {
+  max-width: 780px;
+  margin-bottom: 26px;
+  scroll-margin-top: 18px;
+}
+.design-root.executive-design .glass-message-user {
+  width: fit-content;
+  max-width: 78%;
+  margin-left: auto;
+  border: 1px solid #dbe6ed;
+  background: #eef4f7;
+  border-radius: 15px 15px 4px 15px;
+  padding: 13px 17px;
+}
+.design-root.executive-design .glass-message-author {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #425f70;
+  margin-bottom: 10px;
+}
+.design-root.executive-design .glass-author-mark {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 7px;
+  background: #edf2f6;
+}
+.design-root.executive-design .glass-author-mark img {
+  border-radius: 4px;
+}
+.design-root.executive-design .glass-message p {
+  font-size: 14px;
+  line-height: 1.75;
+  margin: 4px 0;
+}
+.design-root.executive-design .glass-message .small {
+  font-size: 12px;
+}
+.design-root.executive-design .glass-message .checklist > li {
+  background: #f8fafb;
+  border: 1px solid #dbe5eb;
+  border-radius: 9px;
+  animation: none;
+  padding: 17px;
+}
+.design-root.executive-design .glass-message .checklist p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.design-root.executive-design .glass-message .check-number {
+  background: #e5edf4;
+  color: var(--primary);
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.design-root.executive-design .glass-message .citation-chips a {
+  min-height: 28px;
+  border-radius: 5px;
+  border: 1px solid #bbccda;
+  background: #fff;
+  color: var(--primary);
+  font-size: 12px;
+}
+.design-root.executive-design .glass-message .gaps {
+  border-radius: 8px;
+  background: #f8f2e8;
+  border-color: #e8dac1;
+  color: #6f512d;
+  font-size: 13px;
+}
+.design-root.executive-design .glass-message .evidence-list {
+  border: 1px solid #d5e1e9;
+  border-radius: 9px;
+  padding: 18px;
+  background: #f8fafc;
+}
+.design-root.executive-design .glass-message .evidence-list summary {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.design-root.executive-design .glass-message .evidence-list blockquote {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.design-root.executive-design .source-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  color: #245f7e;
+  font-size: 13px;
+}
+.design-root.executive-design .glass-composer-area {
+  padding: 14px 30px 20px;
+  flex-shrink: 0;
+}
+.design-root.executive-design .glass-composer {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  border: 1px solid #aebfcb;
+  background: #fff;
+  border-radius: 12px;
+  padding: 9px 10px 9px 15px;
+}
+.design-root.executive-design .glass-composer:focus-within {
+  outline: 2px solid #1b5878;
+  outline-offset: 2px;
+}
+.design-root.executive-design .glass-composer textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 25px;
+  max-height: 140px;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 4px 0;
+  color: var(--ink);
+}
+.design-root.executive-design .glass-composer textarea::placeholder {
+  color: #637a87;
+}
+.design-root.executive-design .glass-composer > button {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  min-width: 37px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--primary);
+  color: #fff;
+}
+.design-root.executive-design .glass-composer-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 1px 0;
+  font-size: 12px;
+  color: #526b7a;
+}
+.design-root.executive-design .glass-thinking {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.design-root.executive-design .glass-loading-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+.design-root.executive-design .glass-loading {
+  font-size: 13px;
+  color: var(--muted);
+}
+.design-root.executive-design .glass-welcome {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 0 28px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.design-root.executive-design .glass-welcome h1 {
+  font-size: clamp(30px, 3.4vw, 44px);
+  font-weight: 500;
+  line-height: 1.23;
+  letter-spacing: -0.05em;
+  margin: 18px 0;
+}
+.design-root.executive-design .glass-welcome h1 > span {
+  color: #617986;
+}
+.design-root.executive-design .glass-welcome > p {
+  max-width: 560px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #526b7a;
+  margin: 0;
+}
+.design-root.executive-design .glass-start {
+  margin-top: 24px;
+  gap: 22px;
+  min-height: 44px;
+}
+.design-root.executive-design .glass-prompt-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin-top: 32px;
+}
+.design-root.executive-design .glass-prompt-grid > button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  padding: 18px;
+  background: #fbfcfd;
+  border: 1px solid #d7e2ea;
+  border-radius: 12px;
+  color: var(--primary);
+}
+.design-root.executive-design .glass-prompt-grid strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+.design-root.executive-design .glass-prompt-grid span {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  padding-right: 18px;
+}
+.design-root.executive-design .glass-prompt-grid > button > svg:last-child {
+  position: absolute;
+  right: 16px;
+  top: 19px;
+}
+.design-root.executive-design .glass-preparation-note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #586f7d;
+  display: block;
+  margin-top: 24px;
+}
+.design-root.executive-design .profile-questions legend {
+  font-size: 14px;
+  color: var(--ink);
+}
+.design-root.executive-design .question-category,
+.design-root.executive-design .question-actions > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.design-root.executive-design .radio-option {
+  border-radius: 8px;
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid #b5c9d8;
+  color: var(--ink);
+}
+.design-root.executive-design .radio-option.chosen {
+  background: #e8f1f7;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.design-root.executive-design .question-number {
+  color: var(--primary);
+  background: #e7f0f5;
+}
+.design-root.executive-design .button {
+  border-radius: 8px;
+  min-height: 40px;
+  padding: 10px 14px;
+  font-size: 13px;
+  box-shadow: none;
+}
+.design-root.executive-design .button:not(.button-secondary) {
+  background: var(--primary);
+  color: #fff;
+}
+.design-root.executive-design .button-secondary {
+  background: #fff;
+  color: var(--primary);
+  border-color: #b6cbd8;
+}
+.design-root.executive-design .notice {
+  font-size: 13px;
+  line-height: 1.7;
+  border-radius: 8px;
+}
+.design-root.executive-design .muted {
+  color: var(--muted);
+}
+@media (hover: hover) {
+  .design-root.executive-design .glass-header nav button:hover {
+    background: #f7fafb;
+  }
+  .design-root.executive-design .glass-primary:hover {
+    background: #173c50;
+  }
+  .design-root.executive-design .glass-prompt-grid > button:hover {
+    background: #f1f6f9;
+    border-color: #a8c1d3;
+  }
+  .design-root.executive-design .saved-chat-row:hover {
+    background: #e5edf2;
+  }
+  .design-root.executive-design .glass-new-chat:hover {
+    background: #f4f8fb;
+  }
+}

@@ -47,8 +47,8 @@ def test_publication_change_during_generation_is_rejected():
         validate_answer(generated, [chunk], knowledge)
 
 
-def test_empty_database_does_not_call_model(model):
-    # Return an explicit gap without embeddings, generation, or web discovery.
+def test_empty_database_skips_embeddings_and_answer_generation(model):
+    # Return an explicit gap without embeddings or evidence-answer generation.
     knowledge, conversations = Mock(), Mock()
     knowledge.active_versions.return_value = []
     chat = ChatService(ProfileService(), knowledge, conversations, model)

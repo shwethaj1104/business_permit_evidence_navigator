@@ -1,0 +1,459 @@
+/* Keep the evidence reader legible while giving its controls restrained glass depth. */
+.executive-design .glass-reading-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--accent-soft);
+}
+.executive-design .glass-reading-tabs button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: 1;
+  min-height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.executive-design .glass-reading-tabs button[aria-pressed='true'] {
+  background: var(--surface, white);
+  box-shadow: 0 2px 8px #26395a12;
+}
+.executive-design .glass-provenance-strip,
+.executive-design .glass-fact-pair,
+.executive-design .glass-story-section-title,
+.executive-design .glass-change-cards article > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.executive-design .glass-provenance-strip {
+  margin: 16px 0;
+  font-size: 12px;
+}
+.executive-design .glass-reader-view {
+  display: grid;
+  gap: 20px;
+}
+.executive-design .glass-story-summary {
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--accent-soft);
+}
+.executive-design .glass-story-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+.executive-design .glass-story-summary h3 {
+  margin: 10px 0;
+  font-size: 20px;
+}
+.executive-design .glass-story-summary p,
+.executive-design .glass-story-preview p,
+.executive-design .glass-reading-prose {
+  line-height: 1.8;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.executive-design .glass-fact-pair > div {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+}
+.executive-design .glass-story-section-title {
+  align-items: center;
+}
+.executive-design .glass-story-section-title h3 {
+  margin: 0;
+  font-size: 16px;
+}
+.executive-design .glass-story-section-title > span {
+  font-size: 12px;
+}
+.executive-design .glass-reading-link,
+.executive-design .glass-change-invitation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  cursor: pointer;
+}
+.executive-design .glass-reading-link {
+  border: 0;
+  background: transparent;
+  padding: 8px 0;
+}
+.executive-design .glass-change-invitation {
+  padding: 16px;
+  text-align: left;
+  background: var(--surface, white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.executive-design .glass-change-invitation > span:nth-child(2) {
+  display: grid;
+  gap: 5px;
+  flex: 1;
+}
+.executive-design .glass-change-invitation small {
+  font-size: 12px;
+}
+.executive-design .glass-reading-prose {
+  max-width: 74ch;
+  white-space: pre-line;
+}
+.executive-design .glass-reading-prose h3 {
+  font-size: 17px;
+}
+.executive-design .glass-change-cards {
+  display: grid;
+  gap: 12px;
+}
+.executive-design .glass-change-cards article {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.executive-design .glass-change-cards article > div {
+  font-size: 12px;
+  align-items: center;
+}
+.executive-design .glass-change-cards h4 {
+  margin: 14px 0 6px;
+  overflow-wrap: anywhere;
+}
+.executive-design .glass-readable-diff {
+  max-height: 340px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 12px/1.8 monospace;
+}
+.executive-design .diff-added {
+  background: #e6f4ec;
+  color: #195b37;
+}
+.executive-design .diff-removed {
+  background: #fdecef;
+  color: #813043;
+}
+.executive-design .glass-edition-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.executive-design .glass-evidence-story pre {
+  max-height: 300px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+/* Decorative workflow motion pauses offscreen and has an explicit local pause control. */
+.executive-design .glass-welcome-motion {
+  width: min(270px, 100%);
+  margin: 0 auto 12px;
+  text-align: center;
+  color: var(--accent, #495eaa);
+}
+.executive-design .glass-motion-art {
+  position: relative;
+}
+.executive-design .glass-motion-art svg {
+  display: block;
+  width: 100%;
+  position: relative;
+}
+.executive-design .glass-motion-halo {
+  position: absolute;
+  inset: 12% 18%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #a8befa38, transparent 70%);
+}
+.executive-design .glass-motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .executive-design .glass-motion-art g {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: glass-evidence-float 5s ease-in-out infinite alternate;
+  }
+  .executive-design .glass-motion-art .motion-review {
+    animation-delay: -2s;
+  }
+  .executive-design .glass-motion-art .motion-guidance {
+    animation-delay: -4s;
+  }
+}
+.executive-design .motion-is-paused * {
+  animation-play-state: paused !important;
+}
+@keyframes glass-evidence-float {
+  from {
+    transform: translateY(3px);
+  }
+  to {
+    transform: translateY(-5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .executive-design .glass-motion-art * {
+    animation: none !important;
+  }
+  .executive-design .glass-motion-toggle {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .executive-design .glass-edition-comparison {
+    grid-template-columns: 1fr;
+  }
+  .executive-design .glass-story-summary {
+    padding: 16px;
+  }
+  .executive-design .glass-welcome-motion {
+    width: 190px;
+  }
+}
+
+/* Keep the four source states together at every rail width. */
+.design-root.executive-design .glass-document-workspace {
+  grid-template-columns: 380px minmax(0, 1fr);
+}
+.design-root.executive-design .glass-library-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+.design-root.executive-design .glass-library-tabs button {
+  flex: 1 1 auto;
+  padding: 7px 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  min-width: 0;
+}
+/* The workflow illustration is a composition, rather than a small icon tile. */
+.design-root.executive-design .glass-reader-empty > .glass-welcome-motion {
+  display: block;
+  width: min(270px, 100%);
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  margin: 0 auto 16px;
+}
+.design-root.executive-design .glass-motion-toggle {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  justify-content: center;
+  border: 1px solid #ccdce8;
+  background: #f5f9fc;
+  border-radius: 50%;
+}
+.design-root.executive-design .glass-context-fields .profile-progress-label {
+  display: none;
+}
+/* Guide the next selection through the control surface, without a second outer frame. */
+.design-root.executive-design .glass-context-fields .profile-field[data-next-selection] {
+  position: relative;
+  background: transparent;
+  outline: none;
+}
+.design-root.executive-design .glass-context-fields .profile-field[data-next-selection] > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.design-root.executive-design
+  .glass-context-fields
+  .profile-field[data-next-selection]
+  > span::after {
+  content: 'Next';
+  color: #416a86;
+  background: #e8f1f6;
+  border: 1px solid #d4e3ec;
+  border-radius: 20px;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+.design-root.executive-design
+  .glass-context-fields
+  .profile-field[data-next-selection]
+  .select-trigger {
+  position: relative;
+  overflow: hidden;
+  border-color: #96b7cd;
+  border-radius: 11px;
+  background: linear-gradient(130deg, #ffffff 5%, #f0f7fb 58%, #e7f0f7);
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    inset 0 -1px 0 #dce9f180,
+    0 3px 10px #3c668415;
+}
+.design-root.executive-design
+  .glass-context-fields
+  .profile-field[data-next-selection]
+  .select-trigger::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, #ffffffa8 48%, transparent 66%);
+  transform: translateX(-110%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-input-modality='keyboard'])
+    .executive-design
+    .glass-context-fields
+    .profile-field[data-next-selection]
+    .select-trigger::after {
+    animation: glass-next-sweep 1.4s var(--ease-in-out, ease-in-out) 2;
+  }
+}
+@keyframes glass-next-sweep {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(110%);
+  }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .design-root.executive-design .glass-document-workspace {
+    grid-template-columns: 340px minmax(0, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .design-root.executive-design .glass-document-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .design-root.executive-design .glass-library-tabs button {
+    font-size: 10.5px;
+    padding-inline: 2px;
+  }
+}
+
+/* Match the assistant canvas gutters while keeping knowledge actions together. */
+.design-root.executive-design .glass-knowledge {
+  max-width: none;
+  margin: 0;
+  width: 100%;
+  padding: 16px;
+}
+.design-root.executive-design .glass-library-options {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin: 0 0 14px;
+}
+.design-root.executive-design .glass-discovery-option {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+}
+.design-root.executive-design .glass-discovery-option > span {
+  padding-left: 23px;
+  color: var(--muted);
+  font-size: 11px;
+}
+@media (max-width: 1200px) {
+  .design-root.executive-design .glass-knowledge {
+    padding: 12px;
+  }
+}
+@media (max-width: 760px) {
+  .design-root.executive-design .glass-knowledge {
+    padding: 10px;
+  }
+  .design-root.executive-design .glass-library-options {
+    gap: 10px;
+  }
+}
+
+/* Keep independent sync actions alongside the context disclosure, never nested in its button. */
+.design-root.executive-design .glass-context-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 12px 8px 0;
+}
+.design-root.executive-design .glass-context-header .glass-context-trigger {
+  width: auto;
+  flex-shrink: 0;
+}
+.design-root.executive-design .glass-context-header .glass-library-options {
+  margin: 0;
+  gap: 16px;
+}
+.design-root.executive-design .glass-context-header .glass-primary {
+  min-height: 36px;
+  padding: 8px 14px;
+}
+@media (max-width: 760px) {
+  .design-root.executive-design .glass-context-header {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px 12px 12px;
+  }
+  .design-root.executive-design .glass-context-header .glass-context-trigger {
+    padding-left: 4px;
+  }
+  .design-root.executive-design .glass-context-header .glass-library-options {
+    width: 100%;
+    gap: 10px;
+  }
+}
+
+/* Invite the first message with the same glass surface used for the next profile selection. */
+.design-root.executive-design .glass-composer[data-input-invitation] {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-color: #96b7cd;
+  background: linear-gradient(130deg, #ffffff 5%, #f0f7fb 58%, #e7f0f7);
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    inset 0 -1px 0 #dce9f180,
+    0 3px 10px #3c668415;
+}
+.design-root.executive-design .glass-composer[data-input-invitation] textarea {
+  background: transparent;
+}
+.design-root.executive-design .glass-composer[data-input-invitation]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, #ffffffa8 48%, transparent 66%);
+  transform: translateX(-110%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-input-modality='keyboard'])
+    .executive-design
+    .glass-composer[data-input-invitation]::after {
+    animation: glass-next-sweep 1.4s var(--ease-in-out, ease-in-out) 2;
+  }
+}

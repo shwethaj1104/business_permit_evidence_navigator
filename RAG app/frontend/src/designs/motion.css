@@ -1,0 +1,356 @@
+/* Shared motion vocabulary: restrained feedback, source transitions and finite explanations. */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+.design-root .evidence-journey {
+  color: var(--accent-ink);
+  margin: 0 0 12px;
+  width: 270px;
+  max-width: 100%;
+  pointer-events: none;
+}
+.design-root .evidence-journey svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.design-root .evidence-journey figcaption {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--muted);
+}
+.design-root .journey-sheet {
+  fill: var(--surface);
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+.design-root .journey-back-sheet {
+  fill: var(--accent-soft);
+  stroke: var(--edge);
+}
+.design-root .journey-focus {
+  fill: var(--accent-soft);
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+.design-root .journey-connector {
+  opacity: 0.45;
+}
+.design-root .journey-compact {
+  width: 235px;
+  margin-bottom: 24px;
+}
+.design-root .journey-compact figcaption {
+  font-size: 12px;
+}
+.design-root .journey-stage {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.design-root .glass-reader-empty > .journey-compact,
+.design-root .journal-reader-empty > .journey-compact,
+.design-root .console-inspector-empty > .journey-compact {
+  margin-inline: auto;
+}
+.design-root .request-activity {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.design-root .request-activity-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+.design-root .request-activity-dots i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+.design-root .checklist-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+  margin-block: 16px;
+}
+.design-root .checklist-tools > button,
+.design-root .source-retry button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  min-height: 36px;
+  color: var(--accent-ink);
+  background: var(--surface);
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.design-root .checklist-tools > button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.design-root .checklist-copy-feedback {
+  color: var(--muted);
+  font-size: 12px;
+}
+.design-root .checklist-tools > p {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 13px;
+}
+.design-root .source-retry {
+  padding: 24px 18px;
+  color: var(--ink);
+  font-size: 13px;
+}
+.design-root .source-retry p {
+  color: var(--muted);
+  margin: 8px 0 16px;
+}
+.design-root .checklist-tools button:focus-visible,
+.design-root .source-retry button:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
+.design-root .console-skip {
+  position: fixed;
+  z-index: 150;
+  top: 8px;
+  left: 16px;
+  transform: translateY(-180%);
+  padding: 10px 15px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--edge);
+}
+.design-root .console-skip:focus {
+  transform: translateY(0);
+}
+/* The complete flow settles once; no ambient loops or moving document text. */
+@media (prefers-reduced-motion: no-preference) {
+  .design-root .evidence-journey[data-animate='true'] .journey-stage {
+    animation: evidence-arrive 600ms var(--ease-out) backwards;
+  }
+  .design-root .evidence-journey[data-animate='true'] .journey-stage-two {
+    animation-delay: 140ms;
+  }
+  .design-root .evidence-journey[data-animate='true'] .journey-stage-three {
+    animation-delay: 280ms;
+  }
+  .design-root .evidence-journey[data-animate='true'] .journey-connector {
+    animation: evidence-connect 700ms var(--ease-out) 160ms backwards;
+  }
+  .design-root .request-activity-dots i {
+    animation: request-dot 900ms linear infinite;
+  }
+  .design-root .request-activity-dots i:nth-child(2) {
+    animation-delay: 150ms;
+  }
+  .design-root .request-activity-dots i:nth-child(3) {
+    animation-delay: 300ms;
+  }
+  html[data-input-modality='pointer'] .design-root .workspace {
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+    @starting-style {
+      opacity: 0.6;
+      transform: translateY(4px);
+    }
+  }
+  html[data-input-modality='pointer']
+    .design-root
+    :is(
+      .glass-context-fields,
+      .console-scope-controls,
+      .console-conversation-drawer,
+      .journal-history-drawer,
+      .journal-context-drawer
+    ) {
+    transition:
+      opacity 200ms var(--ease-drawer),
+      transform 200ms var(--ease-drawer);
+    transform-origin: top left;
+    @starting-style {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  html[data-input-modality='pointer'] .design-root .select-options {
+    transition:
+      opacity 160ms var(--ease-out),
+      transform 160ms var(--ease-out);
+    transform-origin: top center;
+    @starting-style {
+      opacity: 0;
+      transform: translateY(-3px) scale(0.98);
+    }
+  }
+  html[data-input-modality='pointer'] .design-root .select-options-above {
+    transform-origin: bottom center;
+  }
+  html[data-input-modality='pointer']
+    .design-root
+    :is(
+      .glass-primary,
+      .glass-secondary,
+      .glass-new-chat,
+      .journal-primary,
+      .journal-new,
+      .console-primary,
+      .console-tool,
+      .checklist-tools > button,
+      .source-retry button,
+      .glass-composer button,
+      .journal-send,
+      .console-send
+    ) {
+    transition:
+      transform 100ms var(--ease-out),
+      opacity 100ms var(--ease-out);
+  }
+  html[data-input-modality='pointer']
+    .design-root
+    :is(
+      .glass-primary,
+      .glass-secondary,
+      .glass-new-chat,
+      .journal-primary,
+      .journal-new,
+      .console-primary,
+      .console-tool,
+      .checklist-tools > button,
+      .source-retry button,
+      .glass-composer button,
+      .journal-send,
+      .console-send
+    ):not(:disabled):active {
+    transform: scale(0.98);
+    transition-duration: 160ms;
+  }
+  html[data-input-modality='pointer'] .design-root .radio-check {
+    transition:
+      opacity 160ms var(--ease-out),
+      transform 160ms var(--ease-out);
+  }
+  html[data-input-modality='pointer'] .design-root .radio-option.chosen .radio-check {
+    transform: scale(1);
+  }
+  html[data-input-modality='pointer'] .design-root .radio-option:not(.chosen) .radio-check {
+    transform: scale(0.9);
+  }
+  @supports selector(details::details-content) {
+    html[data-input-modality='pointer'] .design-root details::details-content {
+      opacity: 0;
+      transition:
+        opacity 180ms var(--ease-out),
+        content-visibility 180ms allow-discrete;
+    }
+    html[data-input-modality='pointer'] .design-root details[open]::details-content {
+      opacity: 1;
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .design-root :is(.glass-source-item, .journal-timeline button, .console-source-row, .saved-chat) {
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease;
+  }
+  .design-root .checklist-tools > button:hover,
+  .design-root .source-retry button:hover {
+    background: var(--accent-soft);
+  }
+}
+@keyframes evidence-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes evidence-connect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+@keyframes request-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+@media (max-width: 600px) {
+  .design-root .evidence-journey {
+    width: 200px;
+    margin-bottom: 16px;
+  }
+  .design-root .evidence-journey figcaption {
+    font-size: 12px;
+  }
+  .design-root .journey-compact {
+    width: 180px;
+  }
+  .design-root .checklist-copy-feedback {
+    flex-basis: 100%;
+  }
+}
+@media (forced-colors: active) {
+  .design-root .journey-sheet,
+  .design-root .journey-focus {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .design-root .checklist-tools > button,
+  .design-root .source-retry button {
+    border-color: ButtonText;
+  }
+}
+
+/* Keyboard focus and selection never inherit slower pointer decoration from legacy styles. */
+html[data-input-modality='keyboard']
+  .design-root
+  :is(
+    button,
+    a,
+    input,
+    textarea,
+    summary,
+    .select-trigger svg,
+    .select-options,
+    .radio-option,
+    .radio-check
+  ) {
+  transition: none !important;
+}
+html[data-input-modality='keyboard'] .design-root .select-options {
+  animation: none !important;
+}

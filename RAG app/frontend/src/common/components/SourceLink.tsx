@@ -5,7 +5,7 @@ import { safeSourceUrl } from '../utils/format';
 export function SourceLink({ url, children }: { url: string; children: ReactNode }) {
   const href = safeSourceUrl(url);
   return href ? (
-    <a href={href} target="_blank" rel="noopener noreferrer">
+    <a className="source-link" href={href} target="_blank" rel="noopener noreferrer">
       {children} ↗
     </a>
   ) : (

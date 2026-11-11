@@ -204,3 +204,144 @@ Model-list access still returns 403; it does not prevent the successful inferenc
 - [x] Add optional Azure dependencies, update lockfile, env template, and Azure setup instructions without changing local secrets.
 - [x] 54 backend tests pass, including mocked Azure launch/template, retry, duplicate suppression, and one-shot exit checks.
 - [ ] Create Azure resources, assign managed identity permissions, and verify live UI → Azure execution → MongoDB completion.
+
+## Conversational workspace refresh — 4 November 2026
+
+- [x] Replace the legacy presentation with a shared emerald/navy design system, refreshed source/review cards and responsive navigation.
+- [x] Show a friendly illustrated professional with a gentle wave on new chat; no initial profile form or disabled questions.
+- [x] Reply to greetings first; show all five business questions with radio choices together inside a single assistant message after a relevant request.
+- [x] Require a complete supported profile before the questionnaire can submit a checklist request; keep Knowledge Updates dropdowns separate.
+- [x] Preserve saved-chat navigation, rename/delete, citations, source counts and approval actions.
+- [x] Keep chat bounded to the viewport, scroll messages inside it, and retain the composer; Knowledge Updates uses document scrolling.
+- [x] Add keyboard Enter-to-send, mobile history toggle, reduced-motion support, and readable text contrast.
+- [x] Classify nontrivial requests server-side before retrieval; return scope refusals for unrelated requests and gaps for unsupported evidence.
+- [x] Resolve yes/yes please/sure/okay against the preceding setup offer, including older stored offers; handle no thanks without a refusal loop.
+- [x] 75 backend tests pass; frontend build/lint/format and backend lint pass. Mocked browser checks cover the conversation flow, radio gating, citations, review, responsive scrolling and selected accessibility rules.
+- [ ] Verify scope-classification quality with real model responses in the deployed environment; unit tests use mocks and do not establish perfect semantic classification.
+- [ ] Deploy both updated backend and frontend through the normal PR/CI workflow.
+
+
+### Seven-emirate reference coverage — 5 November 2026
+
+- Seven selectable mainland IT/software profiles, each with two registered official references: federal guidance and an emirate-specific guide or services page.
+- Existing Dubai source IDs and approvals are preserved; new source IDs include the profile so shared federal URLs cannot mix evidence between emirates.
+- Run `cd backend` then `python -m scripts.setup_db` after activating the virtual environment to register all 14 links in Atlas. This does not fetch documents, call OpenAI, or approve evidence. No new collections are needed.
+- Sync and review each emirate manually in Knowledge Updates before expecting an evidence-backed checklist. Uncaptured or insufficient evidence remains a gap.
+- RAK uses its official government business-services directory; Umm Al Quwain uses its DED services catalogue. These are starting references, not verified complete software-licensing instructions. Both sites timed out during live verification; capture may fail and require replacement with a reachable official service page.
+
+
+### Mint workspace refresh — 9 November 2026
+
+- [x] Reference-inspired mint/sage palette, white message cards and deep teal controls.
+- [x] Full-screen assistant with saved chats on the left and floating bottom navigation.
+- [x] Reusable CSS 3D permit illustration and three-slide looping product introduction.
+- [x] Pause/play and direct slide selection; reduced motion and hidden-tab autoplay suspension.
+- [x] Consistent 250px desktop rails and content alignment across both workspaces; responsive mobile layout.
+- [x] Source network linked to real registered sources, clickable nodes and expandable evidence details.
+- [x] Collapsible sync outcomes and document history; existing sync and approval actions retained.
+- [x] App sparkle favicon and updated browser theme metadata.
+- [x] Frontend build and lint pass. Browser checks use mocked APIs to avoid paid sync/model calls.
+- [ ] Deploy frontend changes through the existing GitHub/Azure workflow and verify with live data.
+
+
+### Palette comparison — 9 November 2026
+
+- [x] Six application-wide palettes: Pearl & Iris, Ivory & Charcoal, Ice & Navy, Burgundy & Blush, Apricot & Clay, Stone & Teal.
+- [x] Persistent top switcher updates both workspaces without resetting chat/profile state; validated local storage falls back to Pearl.
+- [x] Shared semantic CSS tokens cover controls, messages, evidence maps, watermarks, illustrations and scrollbars.
+- [x] Two-row mobile palette controls; desktop/mobile checks and targeted accessibility checks passed across all six palettes.
+
+
+- [x] Final theme selected: **Pearl & Iris**. Removed the temporary comparison switcher, alternative palettes and browser preference code. Favicon and browser theme metadata now match the final theme.
+
+
+### Compact guidance and evidence motion — 9 November 2026
+
+- [x] Auto-growing message input without a default scrollbar, separate send icon and tighter message spacing.
+- [x] Removed redundant composer/sidebar copy and shortened Knowledge headings and scope notes.
+- [x] Five mutually exclusive source-status groups with counts, filtering and 12-at-a-time source disclosure, verified using 100 mocked sources.
+- [x] Latest Sync shows a compact raised status badge and a disclosure chevron.
+- [x] Curved layered network cables animate connection highlights; decorative sidebar watermarks drift gently.
+- [x] Three concise welcome slides use distinct conversation, seven-emirate and evidence animations; existing document sculpture retained for evidence.
+- [x] Knowledge empty state reuses the animated evidence sculpture.
+- [x] Consistent capitalisation for card/status/dropdown labels without changing backend values.
+- [x] Reduced-motion preferences disable decorative motion; frontend build and lint pass.
+
+
+### Business interface audit and three design previews — 10 November 2026
+
+- [x] Completed `better-interface` audit using all six owning domain guides; ranked report in `docs/design/INTERFACE_AUDIT.md`.
+- [x] Three independent agents implemented Executive Desk, Editorial Concierge and Evidence Console.
+- [x] Added local preview switcher and shareable `?design=` URLs; backend/API functionality remains shared.
+- [x] Corrected draft persistence, citation navigation, composer focus, contrast, source-link targets and profile completion counts.
+- [x] Added offline screenshot gallery at `docs/design/DESIGN_COMPARISON.html`.
+- [x] Frontend build, lint and formatting pass; browser verification uses mocked API data and includes narrow-width and error states.
+- [ ] Choose one design; then remove the two comparison-only variants for the final release.
+- [ ] Restore local MongoDB network access and restart the API; saved-chat loading currently returns 503 while database readiness is false.
+- [ ] Native screen-reader, actual browser zoom, iOS keyboard and live-provider end-to-end checks remain to be completed.
+
+
+### Complete UI composition overhaul — 10 November 2026
+
+- [x] Replace the previous skyline/summary-card layout in all three previews.
+- [x] Build independent Assistant and Knowledge React views for Glass Workspace, Advisory Journal and Operations Console.
+- [x] Share typed chat/knowledge view models rather than duplicate API and Redux behavior.
+- [x] Preserve saved chats, unsent drafts, five-question profile selection, citations, manual sync, discovery choice and approval actions.
+- [x] Preserve provenance dates, section changes, version browsing and full document comparison.
+- [x] Check desktop and 320px layouts, source collections of 100 entries, keyboard selection, reduced motion, errors and active sync states with intercepted fixtures.
+- [x] Correct contrast, mobile accessible-name and keyboard-scroll issues identified by browser checks.
+- [x] Install all seven requested skill collections: 333 new packages, three existing packages preserved; pinned provenance recorded in docs/design/skills-provenance.json.
+- [x] Refresh the offline design comparison and screenshots.
+- [ ] Recheck the complete flow against the user's running backend and Atlas. The latest local health request could not reach port 8000; earlier diagnostics identified a MongoDB connection failure. No credentials or Atlas settings were changed.
+- [ ] User chooses the preferred direction before removing the other preview implementations.
+
+Verification uses mocked API responses only and does not establish live backend readiness. Screen-reader output, Safari/iOS input behavior and native browser zoom remain unverified.
+
+
+### Purposeful motion and interaction review — 10 November 2026
+
+- [x] Review navigation, welcome, saved conversations, profile selection, composer, checklist, source library, reader, sync log and failure states across all three designs.
+- [x] Add a distinct source → human review → checklist SVG illustration per design, played once per surface per page session.
+- [x] Add short pointer-only workspace, drawer, dropdown and source-selection transitions with shared easing tokens.
+- [x] Keep keyboard navigation immediate; suppress inherited pointer decoration and cancel selected-document fades on keyboard input.
+- [x] Add real-request activity feedback and clearer sync-start/profile-loading/saved-chat-loading labels.
+- [x] Copy checklists with conditions, unresolved gaps and source/version links; handle clipboard denial.
+- [x] Distinguish unavailable source collections from genuinely empty collections; provide read-only retry without a capture or model call.
+- [x] Fix nested Escape behaviour and return focus when business-context/history panels close; focus the composer on New Chat.
+- [x] Check finite illustrations, reduced motion, pointer/keyboard timing, source retry HTTP methods and clipboard success/failure with intercepted fixtures.
+- [x] Check 21 core desktop/mobile states and 15 motion/interaction states with automated accessibility checks; no reported violations in the tested final states.
+- [x] Refresh the comparison gallery images.
+- [ ] Verify native screen-reader output, Safari/iOS behaviour, real-device frame performance and live backend integration.
+
+No external animation library, recurring decorative loop, invented progress percentage or automatic paid operation was introduced. Request dots run only during a real pending request. Browser checks use intercepted fixture responses, with no OpenAI calls or database writes.
+
+
+### Minimal new-chat welcome
+
+- [x] Use one shared welcome component across the three designs: compact illustration, short heading, one sentence and one checklist action.
+- [x] Remove the welcome's extra prompt cards, process list and repeated notes.
+- [x] Verify the starting button is visible above the composer at 320×568 without initial scrolling; desktop/mobile automated accessibility checks pass.
+
+
+### Chat spacing and atmosphere
+
+- [x] Widen conversations in all three designs while keeping 28px desktop / 18px mobile side gutters.
+- [x] Reduce user-message vertical padding to 6px desktop / 5px mobile; retain multiline wrapping.
+- [x] Add six low-opacity edge accents with a persisted pause/resume toggle; pause during typing and when the document is hidden.
+- [x] Use static backgrounds on mobile and under reduced motion; keep decoration non-interactive and hidden from assistive technology.
+- [x] Verify desktop/mobile geometry, pause persistence, resume, typing pause and reduced motion with mocked API fixtures. Corrected and rechecked dark-theme completion-count contrast. Build, lint and formatting pass.
+
+
+### Evidence validation and workspace cleanup — 11 November 2026
+
+- [x] Constrain provider output to the IDs from the current retrieval; require non-empty cited checklists and item-free gap/follow-up answers. Keep server-side active-version validation.
+- [x] Add safe validation-reason/count logging without model text, retrieved content or arbitrary generated IDs.
+- [x] Verify the SDK strict-schema request/response boundary with mocked HTTP; backend suite: 89 tests passed.
+- [x] Remove composer footers, country/sector header labels, the background toggle and redundant completed-profile copy.
+- [x] Replace the brand/favicon with a business-permit briefcase mark.
+- [x] Use Knowledge workspace as the heading; retain subtitles and reduce Glass top spacing to 12px desktop / 10px mobile, including removal of empty notice gaps.
+- [x] Add Glass Failed filter using latest capture status; keep old published evidence available independently.
+- [x] Display stored/captured source titles with readable URL-path fallback, using existing data without an LLM or additional request.
+- [x] Make the decorative chat backdrop settle after three seconds; mobile/reduced-motion backgrounds remain static.
+- [x] Verify all three designs with nine desktop/mobile fixture screens, Failed filtering, human-readable search, missing chrome and finite motion. Frontend build/lint/formatting passed.
+- [ ] Live provider verification: automatic approval review rejected sending the stored conversation/evidence to OpenAI for a paid check without specific authorization. No such call was executed.

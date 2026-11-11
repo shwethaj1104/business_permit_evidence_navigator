@@ -1,66 +1,54 @@
-import { useState } from 'react';
-import { BookOpenCheck, MessagesSquare, Database } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useWorkspaceInteractions } from '../common/hooks/useWorkspaceInteractions';
 import { useHealthQuery } from '../common/api/baseApi';
 import { Notice } from '../common/components/Notice';
 import { errorMessage } from '../common/utils/format';
-import { ProfileSelectors } from '../features/business-profile/components/ProfileSelectors';
 import { ChatPanel } from '../features/checklist-chat/components/ChatPanel';
 import { KnowledgePanel } from '../features/knowledge-updates/components/KnowledgePanel';
+import { ExecutiveDesign } from '../designs/executive/ExecutiveDesign';
+import type { WorkspaceTab } from '../designs/types';
 
-// Compose the local workspace without authentication or background source syncing.
+// Render the finalized Glass Workspace with shared chat and knowledge behavior.
 export function App() {
-  const [tab, setTab] = useState<'chat' | 'updates'>('chat');
+  useWorkspaceInteractions();
+  // Remove obsolete preview choices from existing bookmarks without disrupting evidence anchors.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('design')) {
+      url.searchParams.delete('design');
+      window.history.replaceState(window.history.state, '', url);
+    }
+    try {
+      localStorage.removeItem('permit-navigator-design-preview');
+    } catch {
+      // The finalized workspace also works when browser storage is unavailable.
+    }
+  }, []);
+  const [tab, setTab] = useState<WorkspaceTab>('chat');
+  const previousTab = useRef(tab);
   const { data: health, error } = useHealthQuery();
-  return (
-    <div className="app-shell">
-      <header className="topbar">
-        <div className="brand">
-          <span className="brand-icon">
-            <BookOpenCheck size={23} />
-          </span>
-          <div>
-            <strong>Permit Navigator DEPLOYED CI/CD</strong>
-            <span>UAE BUSINESS SETUP ASSISTANT</span>
-          </div>
-        </div>
-      </header>
-      <nav className="tabs" aria-label="Workspace tabs">
-        <button
-          className={tab === 'chat' ? 'active' : ''}
-          aria-current={tab === 'chat' ? 'page' : undefined}
-          onClick={() => setTab('chat')}
-        >
-          <MessagesSquare size={17} /> Checklist assistant
-        </button>
-        <button
-          className={tab === 'updates' ? 'active' : ''}
-          aria-current={tab === 'updates' ? 'page' : undefined}
-          onClick={() => setTab('updates')}
-        >
-          <Database size={17} /> Knowledge updates
-        </button>
-      </nav>
-      {error && <Notice error>{errorMessage(error)}</Notice>}
-      {health?.status === 'setup_required' && (
-        <Notice>
-          <strong>Finish connection setup.</strong>{' '}
-          {health.message ?? 'Add OPENAI_API_KEY to the root .env.'} Restart the backend after
-          editing credentials. The profile controls and UI are available now.
-        </Notice>
-      )}
-      <main className={`workspace ${tab === 'chat' ? 'workspace-chat' : ''}`}>
-        {tab === 'chat' ? (
-          <ChatPanel />
-        ) : (
-          <>
-            <ProfileSelectors />
-            <KnowledgePanel />
-          </>
+  useEffect(() => {
+    document.title = `${tab === 'chat' ? 'Assistant' : 'Knowledge'} · Permit Navigator`;
+    if (previousTab.current !== tab)
+      document.getElementById('workspace-main')?.focus({ preventScroll: true });
+    previousTab.current = tab;
+  }, [tab]);
+  const notices =
+    error || health?.status === 'setup_required' ? (
+      <>
+        {error && <Notice error>{errorMessage(error)}</Notice>}
+        {health?.status === 'setup_required' && (
+          <Notice>
+            {health.message ?? 'Connection setup is required. Contact the workspace administrator.'}
+          </Notice>
         )}
-      </main>
-      <footer>
-        Built around official evidence <span>React · FastAPI · MongoDB Atlas · OpenAI</span>
-      </footer>
+      </>
+    ) : undefined;
+  return (
+    <div className={`design-preview design-preview-${tab}`}>
+      <ExecutiveDesign tab={tab} onTabChange={setTab} notices={notices}>
+        {tab === 'chat' ? <ChatPanel /> : <KnowledgePanel />}
+      </ExecutiveDesign>
     </div>
   );
 }

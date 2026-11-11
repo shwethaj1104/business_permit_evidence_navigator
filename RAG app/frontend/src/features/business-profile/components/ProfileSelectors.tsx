@@ -1,4 +1,5 @@
-import { MapPin, Layers } from 'lucide-react';
+import { RequestActivity } from '../../../common/components/RequestActivity';
+import { MapPin, Layers, CheckCircle2 } from 'lucide-react';
 import { useGetProfilesQuery } from '../api/profileApi';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setField } from '../store/profileSlice';
@@ -7,15 +8,7 @@ import { useSelectedProfile } from '../hooks/useSelectedProfile';
 import { SelectField } from '../../../common/components/SelectField';
 import { Notice } from '../../../common/components/Notice';
 import { errorMessage } from '../../../common/utils/format';
-import type { ProfileField } from '../../../common/types/api';
-
-const fields: { key: ProfileField; label: string }[] = [
-  { key: 'emirate', label: 'Emirate' },
-  { key: 'jurisdiction', label: 'Jurisdiction' },
-  { key: 'activity', label: 'Business activity' },
-  { key: 'application_type', label: 'Application type' },
-  { key: 'legal_structure', label: 'Legal structure' },
-];
+import { profileFields as fields } from '../constants/profileFields';
 
 // Reuse the same scope selector in both tabs and gate actions until complete.
 export function ProfileSelectors({
@@ -29,22 +22,36 @@ export function ProfileSelectors({
   const selection = useAppSelector(selectProfileSelection);
   const dispatch = useAppDispatch();
   const profile = useSelectedProfile();
-  const selectedCount = Object.values(selection).filter(Boolean).length;
+  const selectedCount = fields.filter(({ key }) => Boolean(selection[key])).length;
+  const nextField = fields.find(({ key }) => !selection[key])?.key;
   return (
     <aside className={`profile-panel ${inline ? 'profile-inline' : ''}`}>
       <div className="eyebrow">
         <MapPin size={15} /> BUSINESS PROFILE
       </div>
-      <h2>Start with your business.</h2>
+      <div className="profile-title-row">
+        <h2>{inline ? 'Make it yours.' : 'Your business profile'}</h2>
+        <span className={`selection-count ${profile ? 'selection-complete' : ''}`}>
+          {profile ? <CheckCircle2 size={13} /> : null}
+          {selectedCount}/5
+        </span>
+      </div>
       <p className="muted">
-        Set the context once. Your checklist and source updates use the same profile.
+        {inline
+          ? 'Five small details. A more relevant starting point.'
+          : 'Choose the business setup you want to keep up to date.'}
       </p>
       <div className="progress-track">
         <div style={{ width: `${(selectedCount / fields.length) * 100}%` }} />
       </div>
-      <p className="small muted">
-        {selectedCount} of {fields.length} selected
-      </p>
+      {!profile && (
+        <p className="profile-progress-label">{fields.length - selectedCount} selections to go</p>
+      )}
+      {isLoading && (
+        <p role="status">
+          <RequestActivity text="Loading business profiles…" />
+        </p>
+      )}
       {error ? (
         <Notice error>{errorMessage(error)}</Notice>
       ) : (
@@ -52,6 +59,7 @@ export function ProfileSelectors({
           <SelectField
             key={key}
             label={label}
+            suggested={key === nextField && !isLoading && !disabled}
             value={selection[key]}
             options={[...new Set(data?.profiles.map((row) => row[key]) ?? [])]}
             disabled={isLoading || disabled}
@@ -62,12 +70,9 @@ export function ProfileSelectors({
       <div className="scope-note">
         <Layers size={20} />
         <div>
-          <strong>One focused pilot</strong>
-          <p>Dubai mainland · IT</p>
-          <p className="small">
-            {profile?.coverage_note ??
-              'More activities can be added later. Complete all selections to continue.'}
-          </p>
+          <strong>Mainland IT · UAE</strong>
+
+          <p className="small">Verify activity-specific requirements.</p>
         </div>
       </div>
     </aside>

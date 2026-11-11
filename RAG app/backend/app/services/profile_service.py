@@ -1,6 +1,6 @@
 from app.core.errors import AppError
 from app.core.logging import logged_operation
-from app.models.domain import PROFILE
+from app.models.domain import PROFILES
 
 
 class ProfileService:
@@ -8,11 +8,12 @@ class ProfileService:
 
     def list(self):
         # Return only implemented profile combinations.
-        return [PROFILE]
+        return PROFILES
 
     @logged_operation("profile.validate")
     def require(self, profile_id):
         # Reject unsupported scopes before any retrieval or paid request.
-        if profile_id != PROFILE.id:
+        profile = next((row for row in PROFILES if row.id == profile_id), None)
+        if profile is None:
             raise AppError("This business profile is not supported yet.", 422)
-        return PROFILE
+        return profile
