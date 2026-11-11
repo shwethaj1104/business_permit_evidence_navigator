@@ -27,3 +27,24 @@ export function safeSourceUrl(value: string): string | undefined {
     return undefined;
   }
 }
+
+// Capitalise compact UI labels without changing stored values or existing acronyms.
+export function titleCaseLabel(value: string): string {
+  return value.replaceAll('_', ' ').replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+}
+
+// Show review dates consistently in DD/MM/YYYY; preserve date-only authority metadata.
+export function formatReviewDate(value?: string | null): string {
+  if (!value) return 'Not stated';
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (dateOnly) return `${dateOnly[3]}/${dateOnly[2]}/${dateOnly[1]}`;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? 'Not stated'
+    : new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        timeZone: 'Asia/Dubai',
+      }).format(date);
+}

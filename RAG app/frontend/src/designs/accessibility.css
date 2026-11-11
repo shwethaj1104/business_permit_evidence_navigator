@@ -1,0 +1,51 @@
+/* Audited interaction guarantees apply to all three comparison designs. */
+.design-root.mint-workspace .composer textarea:focus-visible {
+  outline: none;
+}
+.design-root.mint-workspace .composer-input:focus-within {
+  outline: 2px solid var(--focus-ring, var(--accent-ink));
+  outline-offset: 3px;
+  border-color: var(--focus-ring, var(--accent-ink));
+}
+.design-root.mint-workspace .message-user > .message-label {
+  color: var(--ink);
+}
+.design-root.mint-workspace .workspace {
+  animation: none;
+}
+.design-root.mint-workspace .chat-sidebar::before,
+.design-root.mint-workspace .chat-sidebar::after,
+.design-root.mint-workspace .profile-panel::before,
+.design-root.mint-workspace .profile-panel::after {
+  display: none;
+  animation: none;
+}
+.design-root.mint-workspace .skyline-count,
+.design-root.mint-workspace .skyline-column {
+  animation: none;
+}
+.design-root.mint-workspace .source-link {
+  min-height: 28px;
+}
+.design-root.mint-workspace .source-date,
+.design-root.mint-workspace .skyline-label,
+.design-root.mint-workspace .skyline-key,
+.design-root.mint-workspace .source-count {
+  font-size: 12px;
+}
+@media (forced-colors: active) {
+  .design-options button,
+  .design-root button,
+  .design-root input,
+  .design-root textarea {
+    border: 1px solid ButtonText;
+  }
+  .design-root :focus-visible {
+    outline: 2px solid Highlight !important;
+  }
+}
+
+/* Programmatic landmark focus announces a workspace without framing the entire page as a control. */
+.design-root #workspace-main:focus {
+  outline: none;
+}

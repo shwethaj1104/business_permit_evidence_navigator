@@ -2,7 +2,7 @@ from app.core.config import get_settings
 from app.core.logging import configure_logging, logged_operation
 from app.db.client import database_connection
 from app.db.indexes import setup_indexes
-from app.models.domain import PROFILE, SEED_SOURCES
+from app.models.domain import PROFILES, sources_for_profile
 from app.repositories.knowledge_repository import KnowledgeRepository
 
 
@@ -12,7 +12,8 @@ def main():
     settings = get_settings()
     with database_connection(settings) as db:
         setup_indexes(db, settings)
-        KnowledgeRepository(db, settings).seed(PROFILE, SEED_SOURCES)
+        for profile in PROFILES:
+            KnowledgeRepository(db, settings).seed(profile, sources_for_profile(profile))
     print("Database initialized. Wait for Atlas search indexes to become READY before approving evidence.")
 
 

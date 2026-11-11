@@ -4,7 +4,7 @@ import { Button } from '../../../common/components/Button';
 import { Notice } from '../../../common/components/Notice';
 import { StatusBadge } from '../../../common/components/StatusBadge';
 import { SourceLink } from '../../../common/components/SourceLink';
-import { errorMessage, formatDate } from '../../../common/utils/format';
+import { errorMessage, formatReviewDate } from '../../../common/utils/format';
 
 // Show source changes and explicit dates before a deliberate approval or rejection.
 export function VersionReview({
@@ -18,7 +18,7 @@ export function VersionReview({
 }) {
   const [review, { isLoading, error }] = useReviewVersionMutation();
   return (
-    <section className="version-review" id="version-review">
+    <section className="version-review" id="version-review" tabIndex={-1}>
       <div className="section-heading">
         <h3>Review source version</h3>
         <StatusBadge status={isActive ? 'active' : version.status} />
@@ -29,27 +29,27 @@ export function VersionReview({
       <div className="date-grid">
         <div>
           <span>Source published</span>
-          <strong>{formatDate(version.source_published_at)}</strong>
+          <strong>{formatReviewDate(version.source_published_at)}</strong>
         </div>
         <div>
           <span>Source updated</span>
-          <strong>{formatDate(version.source_updated_at)}</strong>
+          <strong>{formatReviewDate(version.source_updated_at)}</strong>
         </div>
         <div>
           <span>Fetched</span>
-          <strong>{formatDate(version.fetched_at)}</strong>
+          <strong>{formatReviewDate(version.fetched_at)}</strong>
         </div>
         <div>
           <span>Change detected</span>
-          <strong>{formatDate(version.change_detected_at)}</strong>
+          <strong>{formatReviewDate(version.change_detected_at)}</strong>
         </div>
         <div>
           <span>Effective from</span>
-          <strong>{formatDate(version.effective_from)}</strong>
+          <strong>{formatReviewDate(version.effective_from)}</strong>
         </div>
         <div>
           <span>Activated</span>
-          <strong>{formatDate(version.activated_at)}</strong>
+          <strong>{formatReviewDate(version.activated_at)}</strong>
         </div>
       </div>
       <p className="small muted">
@@ -64,7 +64,7 @@ export function VersionReview({
               <div>
                 <strong>{section.locator}</strong>
                 <p className="small muted">
-                  Change observed: {formatDate(section.change_detected_at)}
+                  Change observed: {formatReviewDate(section.change_detected_at)}
                 </p>
               </div>
               <StatusBadge status={section.status} />
@@ -76,21 +76,24 @@ export function VersionReview({
           </p>
         </details>
       )}
-      <div className="comparison">
-        <div>
-          <h4>Previous captured version</h4>
-          <pre>
-            {previous?.text ??
-              (version.previous_version_id
-                ? 'Previous content is outside the current history window; inspect the difference below.'
-                : 'First captured version — no previous content.')}
-          </pre>
+      <details className="content-comparison">
+        <summary>Compare captured documents</summary>
+        <div className="comparison">
+          <div>
+            <h4>Previous captured version</h4>
+            <pre>
+              {previous?.text ??
+                (version.previous_version_id
+                  ? 'Previous content is outside the current history window; inspect the difference below.'
+                  : 'First captured version — no previous content.')}
+            </pre>
+          </div>
+          <div>
+            <h4>New captured version</h4>
+            <pre>{version.text}</pre>
+          </div>
         </div>
-        <div>
-          <h4>New captured version</h4>
-          <pre>{version.text}</pre>
-        </div>
-      </div>
+      </details>
       <details className="diff">
         <summary>Inspect text difference</summary>
         <pre>{version.diff || 'Text unchanged; source-date metadata changed.'}</pre>

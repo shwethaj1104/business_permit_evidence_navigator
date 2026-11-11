@@ -1,15 +1,23 @@
-import { useId } from 'react';
+import { useId, type ReactNode } from 'react';
 import { FileText } from 'lucide-react';
+import { CopyChecklist } from './CopyChecklist';
 import type { Answer } from '../../../common/types/api';
 import { SourceLink } from '../../../common/components/SourceLink';
 import { formatDate } from '../../../common/utils/format';
 
 // Render checklist evidence as expandable citations rather than unsanitized model HTML.
-export function AnswerCard({ answer }: { answer: Answer }) {
+export function AnswerCard({
+  answer,
+  profilePrompt,
+}: {
+  answer: Answer;
+  profilePrompt?: ReactNode;
+}) {
   const answerId = useId();
   return (
     <div className="answer-body">
       <p>{answer.message}</p>
+      {profilePrompt}
       {answer.items.length > 0 && (
         <ol className="checklist">
           {answer.items.map((item, index) => (
@@ -21,7 +29,29 @@ export function AnswerCard({ answer }: { answer: Answer }) {
                 {item.condition && <p className="small muted">Applies when: {item.condition}</p>}
                 <div className="citation-chips">
                   {item.evidence_ids.map((id) => (
-                    <a key={id} href={`#evidence-${answerId}-${id}`}>
+                    <a
+                      key={id}
+                      href={`#evidence-${answerId}-${id}`}
+                      onClick={(event) => {
+                        // Reveal the cited source before moving keyboard focus within the chat.
+                        const target = document.getElementById(`evidence-${answerId}-${id}`);
+                        if (!(target instanceof HTMLDetailsElement)) return;
+                        event.preventDefault();
+                        target.open = true;
+                        target.querySelector('summary')?.focus({ preventScroll: true });
+                        const scroller = target.closest('.chat-history');
+                        if (scroller instanceof HTMLElement)
+                          scroller.scrollTo({
+                            top:
+                              target.getBoundingClientRect().top -
+                              scroller.getBoundingClientRect().top +
+                              scroller.scrollTop -
+                              16,
+                            behavior: 'instant',
+                          });
+                        window.history.replaceState(null, '', `#${target.id}`);
+                      }}
+                    >
                       Source {answer.citations.findIndex((row) => row.id === id) + 1}
                     </a>
                   ))}
@@ -41,6 +71,7 @@ export function AnswerCard({ answer }: { answer: Answer }) {
           </ul>
         </div>
       )}
+      {answer.items.length > 0 && <CopyChecklist answer={answer} />}
       {answer.citations.length > 0 && (
         <div className="evidence-list">
           <h4>

@@ -1,7 +1,7 @@
 from hashlib import sha256
 
 from app.core.logging import logged_operation
-from app.models.domain import Record, utcnow
+from app.models.domain import PROFILE, Record, utcnow
 
 
 class KnowledgeRepository:
@@ -15,7 +15,9 @@ class KnowledgeRepository:
         # Register sources without fetching anything or overwriting review state.
         self.db.business_profiles.update_one({"id": profile.id}, {"$set": profile.model_dump()}, upsert=True)
         for source in sources:
-            source_id = sha256(source["url"].encode()).hexdigest()[:24]
+            # Scope shared federal URLs to each profile, preserving existing Dubai evidence IDs.
+            source_key = source["url"] if profile.id == PROFILE.id else f"{profile.id}:{source['url']}"
+            source_id = sha256(source_key.encode()).hexdigest()[:24]
             self.db.sources.update_one(
                 {"id": source_id},
                 {
@@ -25,6 +27,7 @@ class KnowledgeRepository:
                         "active_version_id": None,
                         "latest_version_id": None,
                         **source,
+                        "registered_at": utcnow(),
                     }
                 },
                 upsert=True,
@@ -64,6 +67,7 @@ class KnowledgeRepository:
             {
                 "$set": {
                     "last_capture_status": outcome["status"],
+                    "last_capture_at": utcnow(),
                     "last_capture_error": outcome.get("summary") if outcome["status"] == "failed" else None,
                 }
             },

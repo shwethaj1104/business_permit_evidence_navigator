@@ -51,6 +51,8 @@ class AnswerResponse(BaseModel):
     items: list[ChecklistItem]
     gaps: list[str]
     citations: list[Citation]
+    profile_questions: bool = False
+    offers_setup: bool = False
 
 
 class MessageResponse(BaseModel):
@@ -120,6 +122,8 @@ class SourceResponse(BaseModel):
     active_version_id: str | None = None
     latest_version_id: str | None = None
     latest_version_status: str | None = None
+    registered_at: str | None = None
+    last_capture_at: str | None = None
     last_capture_status: str | None = None
     last_capture_error: str | None = None
     last_checked_at: str | None = None

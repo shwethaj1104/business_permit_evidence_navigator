@@ -13,7 +13,7 @@ def test_unconfigured_app_is_usable_without_login(monkeypatch):
     with TestClient(create_app()) as client:
         assert client.get("/api/v1/health").json()["status"] == "setup_required"
         profiles = client.get("/api/v1/profiles").json()["profiles"]
-        assert len(profiles) == 1
+        assert len(profiles) == 7
         response = client.post("/api/v1/knowledge/sync", json={"profile_id": profiles[0]["id"]})
         assert response.status_code == 503
         assert "MONGODB_URI" in response.json()["detail"]
@@ -25,6 +25,9 @@ def test_manual_job_and_gap_round_trip_without_provider_calls(monkeypatch, db, s
     from contextlib import contextmanager
 
     configured = replace(settings, openai_key="test-only-not-a-real-key")
+    monkeypatch.setattr(
+        "app.integrations.openai.client.LanguageModel.classify_intent", lambda *_: "permit_question"
+    )
 
     @contextmanager
     def connection(_settings):

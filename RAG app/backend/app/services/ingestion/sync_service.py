@@ -6,7 +6,7 @@ from app.core.errors import AppError
 from app.core.logging import log_context, log_failure, logged_operation
 from app.integrations.official_sources.extractor import chunk_sections, content_hash, extract, section_history
 from app.integrations.official_sources.fetcher import validate_url
-from app.models.domain import SEED_SOURCES, utcnow
+from app.models.domain import sources_for_profile, utcnow
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ class SyncService:
         profile = self.profiles.require(request.profile_id)
         if not self.model.settings.openai_key:
             raise AppError("Set OPENAI_API_KEY before syncing: new documents need embeddings.", 503)
-        self.knowledge.seed(profile, SEED_SOURCES)
+        self.knowledge.seed(profile, sources_for_profile(profile))
         job = self.jobs.create(profile.id, request.discover)
         logger.info("event=job_enqueued job_id=%s discover=%s", job.id, request.discover)
         if self.dispatcher and self.jobs.reserve_dispatch(job.id):

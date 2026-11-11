@@ -1,0 +1,414 @@
+/* Glass Workspace adaptations keep controls and reading order intact at narrow widths. */
+@media (max-width: 1200px) {
+  .design-root.executive-design .glass-chat {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+  .design-root.executive-design .glass-welcome h1 {
+    font-size: 36px;
+  }
+  .design-root.executive-design .glass-document-workspace {
+    grid-template-columns: 290px minmax(0, 1fr);
+  }
+  .design-root.executive-design .glass-document-reader {
+    padding: 24px;
+  }
+  .design-root.executive-design .glass-context-fields > .profile-panel {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .design-root.executive-design .glass-reader-heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+@media (max-width: 900px) {
+  .design-root.executive-design .glass-header {
+    padding: 0 20px;
+    gap: 22px;
+  }
+  .design-root.executive-design .glass-brand {
+    min-width: 210px;
+  }
+  .design-root.executive-design .glass-territory {
+    display: none;
+  }
+  .design-root.executive-design .glass-chat {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+  .design-root.executive-design .glass-conversations {
+    padding: 18px 10px;
+  }
+  .design-root.executive-design .glass-thread-heading {
+    padding: 18px 22px;
+  }
+  .design-root.executive-design .glass-thread-meta > span {
+    display: none;
+  }
+  .design-root.executive-design .glass-message-scroll {
+    padding: 24px;
+  }
+  .design-root.executive-design .glass-composer-area {
+    padding: 12px 22px 18px;
+  }
+  .design-root.executive-design .glass-composer-caption > span:last-child {
+    display: none;
+  }
+  .design-root.executive-design .glass-welcome h1 {
+    font-size: 31px;
+  }
+  .design-root.executive-design .glass-prompt-grid {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 24px;
+  }
+  .design-root.executive-design .glass-prompt-grid > button {
+    padding: 16px;
+    gap: 7px;
+  }
+  .design-root.executive-design .glass-prompt-grid > button > svg:first-child {
+    display: none;
+  }
+  .design-root.executive-design .glass-knowledge {
+    padding: 12px 18px 28px;
+  }
+  .design-root.executive-design .glass-document-workspace {
+    grid-template-columns: 255px minmax(0, 1fr);
+  }
+  .design-root.executive-design .glass-reader-metadata {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  .design-root.executive-design .glass-reader-metadata > span {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .design-root.executive-design .glass-context-trigger {
+    flex-wrap: wrap;
+  }
+  .design-root.executive-design .glass-context-trigger > strong {
+    margin-left: 0;
+  }
+  .design-root.executive-design .glass-library-options > span {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .design-root.executive-design .glass-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    min-height: 108px;
+    padding: 9px 16px 11px;
+  }
+  .design-root.executive-design .glass-brand {
+    min-width: 0;
+    min-height: 48px;
+  }
+  .design-root.executive-design .glass-brand img {
+    width: 27px;
+    height: 27px;
+  }
+  .design-root.executive-design .glass-brand strong {
+    font-size: 15px;
+  }
+  .design-root.executive-design .glass-brand span {
+    font-size: 12px;
+  }
+  .design-root.executive-design .glass-header nav {
+    justify-self: stretch;
+    padding: 3px;
+    border-radius: 9px;
+  }
+  .design-root.executive-design .glass-header nav button {
+    min-height: 33px;
+    flex: 1;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+  .design-root.executive-design .glass-chat {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 0;
+    position: relative;
+  }
+  .design-root.executive-design .glass-mobile-only {
+    display: grid;
+  }
+  .design-root.executive-design .glass-conversations {
+    display: none;
+  }
+  .design-root.executive-design .glass-conversations.is-open {
+    display: flex;
+    position: absolute;
+    z-index: 20;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 20px;
+    background: #f7fafc;
+    box-shadow: 0 10px 40px #203d5a25;
+  }
+  .design-root.executive-design .glass-conversation {
+    flex: 1;
+    min-height: 0;
+    border-radius: 12px;
+  }
+  .design-root.executive-design .glass-thread-heading {
+    padding: 13px 16px;
+    gap: 10px;
+  }
+  .design-root.executive-design .glass-thread-heading h2 {
+    font-size: 15px;
+    margin-top: 2px;
+  }
+  .design-root.executive-design .glass-crumb {
+    font-size: 12px;
+  }
+  .design-root.executive-design .glass-message-scroll {
+    padding: 20px 16px;
+  }
+  .design-root.executive-design .glass-welcome {
+    min-height: auto;
+    padding: 6px 0 20px;
+  }
+  .design-root.executive-design .glass-welcome h1 {
+    font-size: 30px;
+    line-height: 1.25;
+    margin: 15px 0;
+  }
+  .design-root.executive-design .glass-welcome > p {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .design-root.executive-design .glass-overline {
+    font-size: 12px;
+  }
+  .design-root.executive-design .glass-start {
+    min-height: 42px;
+    font-size: 13px;
+    gap: 14px;
+    margin-top: 20px;
+    max-width: 100%;
+  }
+  .design-root.executive-design .glass-prompt-grid {
+    gap: 10px;
+    margin-top: 23px;
+  }
+  .design-root.executive-design .glass-prompt-grid > button {
+    padding: 14px;
+  }
+  .design-root.executive-design .glass-prompt-grid strong {
+    font-size: 12px;
+  }
+  .design-root.executive-design .glass-prompt-grid span {
+    font-size: 12px;
+    line-height: 1.65;
+  }
+  .design-root.executive-design .glass-preparation-note {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+  .design-root.executive-design .glass-composer-area {
+    padding: 10px 13px 13px;
+  }
+  .design-root.executive-design .glass-composer {
+    padding: 8px 8px 8px 11px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+  .design-root.executive-design .glass-composer textarea {
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 24px;
+  }
+  .design-root.executive-design .glass-composer > button {
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    border-radius: 8px;
+  }
+  .design-root.executive-design .glass-composer-caption {
+    font-size: 12px;
+    padding-top: 6px;
+  }
+  .design-root.executive-design .glass-message {
+    margin-bottom: 22px;
+  }
+  .design-root.executive-design .glass-message-user {
+    max-width: 94%;
+    padding: 11px 13px;
+  }
+  .design-root.executive-design .glass-message-author {
+    font-size: 12px;
+  }
+  .design-root.executive-design .glass-message p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .design-root.executive-design .glass-message .checklist > li {
+    padding: 13px;
+    gap: 10px;
+  }
+  .design-root.executive-design .glass-message .evidence-list {
+    padding: 13px;
+  }
+  .design-root.executive-design .question-options {
+    margin-left: 0;
+    gap: 7px;
+  }
+  .design-root.executive-design .question-category {
+    margin-left: 0;
+  }
+  .design-root.executive-design .question-actions {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .design-root.executive-design .glass-knowledge {
+    padding: 10px 12px 24px;
+  }
+  .design-root.executive-design .glass-library-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 18px;
+  }
+  .design-root.executive-design .glass-library-heading h1 {
+    font-size: 25px;
+  }
+  .design-root.executive-design .glass-library-heading p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .design-root.executive-design .glass-context-trigger {
+    padding: 12px;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .design-root.executive-design .glass-context-trigger > strong {
+    flex-basis: calc(100% - 30px);
+    padding-left: 25px;
+    font-size: 12px;
+    order: 3;
+    overflow-wrap: anywhere;
+  }
+  .design-root.executive-design .glass-context-trigger > svg:last-child {
+    margin-left: auto;
+  }
+  .design-root.executive-design .glass-context-fields {
+    padding: 4px 12px 14px;
+  }
+  .design-root.executive-design .glass-context-fields > .profile-panel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  .design-root.executive-design .glass-context-fields .profile-progress-label {
+    margin-bottom: 0;
+  }
+  .design-root.executive-design .glass-context-fields .select-trigger {
+    font-size: 14px;
+    min-height: 44px;
+  }
+  .design-root.executive-design .glass-context-fields .select-options button {
+    font-size: 14px;
+  }
+  .design-root.executive-design .glass-library-options {
+    font-size: 12px;
+    margin-bottom: 15px;
+  }
+  .design-root.executive-design .glass-library-options label {
+    line-height: 1.6;
+    align-items: flex-start;
+  }
+  .design-root.executive-design .glass-library-options input {
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .design-root.executive-design .glass-document-workspace {
+    display: block;
+    height: 590px;
+    min-height: 450px;
+    border-radius: 12px;
+  }
+  .design-root.executive-design .glass-document-list {
+    height: 100%;
+    border-right: 0;
+  }
+  .design-root.executive-design .glass-document-reader {
+    display: none;
+    height: 100%;
+    padding: 19px 16px;
+  }
+  .design-root.executive-design .glass-document-workspace.reader-open .glass-document-reader {
+    display: block;
+  }
+  .design-root.executive-design .glass-document-workspace.reader-open .glass-document-list {
+    display: none;
+  }
+  .design-root.executive-design .glass-reader-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 30px;
+    border: 0;
+    background: transparent;
+    color: var(--primary);
+    font-size: 12px;
+    padding: 0;
+    margin: 0 0 19px;
+  }
+  .design-root.executive-design .glass-reader-heading h2 {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .design-root.executive-design .glass-reader-empty {
+    padding: 30px 12px;
+  }
+  .design-root.executive-design .glass-reader-empty h2 {
+    font-size: 24px;
+  }
+  .design-root.executive-design .glass-review-footer {
+    bottom: -19px;
+    gap: 13px;
+    padding-top: 15px;
+  }
+  .design-root.executive-design .glass-review-footer > div {
+    width: 100%;
+  }
+  .design-root.executive-design .glass-review-footer .glass-primary,
+  .design-root.executive-design .glass-review-footer .glass-secondary {
+    flex: 1;
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+  .design-root.executive-design .glass-reader-registration {
+    padding: 20px 0;
+  }
+  .design-root.executive-design .glass-reader-registration > p {
+    font-size: 13px;
+  }
+  .design-root.executive-design .glass-reader-metadata strong {
+    font-size: 12px;
+  }
+  .design-root.executive-design .glass-reader-metadata > span {
+    font-size: 12px;
+  }
+  .design-root.executive-design .glass-search input {
+    font-size: 16px;
+  }
+  .design-root.executive-design .glass-library-tabs button {
+    font-size: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .design-root.executive-design *,
+  .design-root.executive-design *::before,
+  .design-root.executive-design *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -19,7 +19,7 @@ def test_welcome_persists_and_profile_binds_without_losing_messages(db, model):
     welcome = service.send(ChatRequest(message="Hello, how do I start a business?"))
     assert welcome.profile_id is None
     assert welcome.messages[-1]["answer"]["kind"] == "follow_up"
-    assert "five business options" in welcome.messages[-1]["text"]
+    assert welcome.messages[-1]["answer"]["profile_questions"] is True
     model.embed.assert_not_called()
     model.answer.assert_not_called()
     knowledge.active_versions.assert_not_called()
@@ -33,7 +33,9 @@ def test_welcome_persists_and_profile_binds_without_losing_messages(db, model):
     assert ConversationResponse.model_validate(response.model_dump()).profile_id == PROFILE.id
     assert repository.list(PROFILE.id)["conversations"][0]["id"] == welcome.id
     with pytest.raises(AppError):
-        service.send(ChatRequest(conversation_id=welcome.id, message="Change profile"))
+        service.send(
+            ChatRequest(profile_id="unsupported", conversation_id=welcome.id, message="Change profile")
+        )
 
 
 def test_all_chat_history_paginates_across_profiles(db):

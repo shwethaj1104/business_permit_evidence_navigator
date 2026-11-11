@@ -1,0 +1,192 @@
+/* Use the chat width for working content while keeping small, consistent reading gutters. */
+.design-root.executive-design .glass-message-scroll,
+.design-root.concierge-design .journal-transcript,
+.design-root.console-design .console-transcript.chat-history {
+  padding: 22px 28px;
+  background: transparent;
+}
+.design-root.executive-design .glass-message,
+.design-root.console-design .console-entry {
+  max-width: none;
+  margin-bottom: 20px;
+}
+.design-root.concierge-design .journal-conversation-column {
+  width: 100%;
+  margin: 0;
+  border-inline: 0;
+}
+.design-root.concierge-design .journal-page-mark {
+  display: none;
+}
+.design-root.concierge-design .journal-entry {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+}
+.design-root.executive-design .glass-message-user,
+.design-root.console-design .console-entry.entry-user {
+  width: fit-content;
+  max-width: 85%;
+  padding: 6px 11px;
+}
+.design-root.executive-design .glass-message-user > .glass-message-author,
+.design-root.console-design .console-entry.entry-user > .console-entry-label {
+  margin-bottom: 2px;
+  font-size: 11px;
+  line-height: 1.3;
+}
+.design-root.executive-design .glass-message-user > p,
+.design-root.console-design .console-entry.entry-user > p {
+  margin: 0;
+  line-height: 1.55;
+}
+.design-root.concierge-design .journal-question-entry {
+  width: fit-content;
+  max-width: 85%;
+  margin-inline-start: auto;
+  padding: 6px 11px;
+  border: 1px solid var(--edge);
+  border-radius: 9px;
+  background: var(--surface-soft);
+}
+.design-root.concierge-design .journal-question-entry > header {
+  margin-bottom: 2px;
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.design-root.concierge-design .journal-question-entry .journal-entry-rule {
+  display: none;
+}
+.design-root.concierge-design .journal-question-entry > p {
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+  color: var(--ink);
+}
+/* Bound the atmosphere to the conversation, behind readable messages and opaque input chrome. */
+.design-root :is(.glass-conversation, .journal-conversation-column, .console-session-body) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.design-root.console-design .console-session-body {
+  background: #101a2b;
+}
+.design-root
+  :is(.glass-conversation, .journal-conversation-column, .console-session-body)
+  > :not(.chat-atmosphere) {
+  position: relative;
+  z-index: 1;
+}
+.design-root .chat-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  color: var(--accent-ink);
+}
+.design-root .chat-atmosphere > span {
+  position: absolute;
+  display: block;
+  opacity: 0.11;
+}
+.design-root .chat-atmosphere i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.design-root .chat-atmosphere > span:nth-child(1) {
+  inset: 15% auto auto 3%;
+}
+.design-root .chat-atmosphere > span:nth-child(2) {
+  inset: 38% 3% auto auto;
+}
+.design-root .chat-atmosphere > span:nth-child(3) {
+  inset: 72% auto auto 4%;
+}
+.design-root .chat-atmosphere > span:nth-child(4) {
+  inset: 81% 5% auto auto;
+}
+.design-root .chat-atmosphere > span:nth-child(5) {
+  inset: 7% 17% auto auto;
+}
+.design-root .chat-atmosphere > span:nth-child(6) {
+  inset: 58% auto auto 13%;
+}
+.design-root .chat-atmosphere > span:nth-child(2) i,
+.design-root .chat-atmosphere > span:nth-child(3) i {
+  width: 64px;
+  height: 64px;
+  background: transparent;
+  border: 1px solid currentColor;
+  opacity: 0.45;
+}
+.design-root.concierge-design .chat-atmosphere i {
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+.design-root.console-design .chat-atmosphere i {
+  border-radius: 2px;
+  background: transparent;
+  border: 1px solid currentColor;
+}
+.design-root.console-design .chat-atmosphere > span:nth-child(2) i,
+.design-root.console-design .chat-atmosphere > span:nth-child(3) i {
+  width: 46px;
+  height: 46px;
+}
+
+@media (min-width: 601px) and (prefers-reduced-motion: no-preference) {
+  .design-root .chat-atmosphere > span {
+    animation: chat-edge-drift 3s var(--ease-out) 1 both;
+  }
+}
+@keyframes chat-edge-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(10px, -14px, 0);
+  }
+}
+@media (max-width: 600px) {
+  .design-root.executive-design .glass-message-scroll,
+  .design-root.concierge-design .journal-transcript,
+  .design-root.console-design .console-transcript.chat-history {
+    padding: 16px 18px;
+  }
+
+  .design-root .chat-atmosphere > span:nth-child(n + 4) {
+    display: none;
+  }
+  .design-root.executive-design .glass-message-user,
+  .design-root.console-design .console-entry.entry-user,
+  .design-root.concierge-design .journal-question-entry {
+    max-width: 94%;
+    padding: 5px 9px;
+  }
+}
+
+@media (forced-colors: active) {
+  .design-root .chat-atmosphere {
+    display: none;
+  }
+}
+
+.design-root.executive-design .glass-message-user > p,
+.design-root.console-design .console-entry.entry-user > p,
+.design-root.concierge-design .journal-question-entry > p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Keep the profile completion count readable over each design's chat canvas. */
+.design-root .question-actions > span[aria-live] {
+  color: var(--muted);
+}

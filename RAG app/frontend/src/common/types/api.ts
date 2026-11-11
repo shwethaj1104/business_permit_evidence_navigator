@@ -39,6 +39,7 @@ export interface Citation {
 }
 export interface Answer {
   kind: 'checklist' | 'follow_up' | 'gap';
+  profile_questions?: boolean;
   message: string;
   items: ChecklistItem[];
   gaps: string[];
@@ -82,6 +83,8 @@ export interface Source {
   active_version_id: string | null;
   latest_version_id: string | null;
   latest_version_status: string | null;
+  registered_at?: string | null;
+  last_capture_at?: string | null;
   last_capture_status: string | null;
   last_capture_error: string | null;
   last_checked_at: string | null;

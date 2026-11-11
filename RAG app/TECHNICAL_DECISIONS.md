@@ -157,3 +157,47 @@ Profile controls use the shared `SelectField` component in both tabs. Options ex
 ### On-demand Azure sync dispatch
 
 `SYNC_DISPATCH_MODE=azure` adds a post-persistence dispatch step using the API managed identity. It reads the configured Manual Azure Job's complete template, overrides the command to `python -m app.workers.sync_worker --job-id <id>`, and starts an execution through ARM API version 2025-01-01. Azure dependencies are an optional package extra. The existing local mode remains the default. MongoDB leases ensure exclusive processing; a two-minute launch reservation reduces duplicate executions. No background recovery scheduler is added: failures and expired leases are recovered through explicit manual retry. See `AZURE_SYNC_SETUP.md` for configuration and limitations.
+
+### Conversational profile collection and UI refresh — 4 November 2026
+
+New chat starts with a decorative animated SVG professional and text welcome. Profile collection is no longer a dropdown panel inside chat. A relevant request produces one assistant answer with `profile_questions=true`; the client renders all five required radio groups inside that message using the same supported-profile definitions as Knowledge Updates. Confirmation submits the supported profile ID in the existing chat request. The latest unconfigured assistant turn owns the active questionnaire; confirmed profiles remain associated with their persisted conversation. Knowledge Updates retains its reusable dropdown selector.
+
+Simple greetings and explicit acceptance/decline of the immediately preceding setup offer are deterministic. `offers_setup` records whether an assistant answer invites setup. Legacy saved offers are also recognized. A confirmation with an existing profile retrieves a meaningful checklist question rather than embedding the bare word “yes”. Other messages use typed, tool-free intent classification against supported profiles before retrieval. This adds a generation request for nontrivial messages. The evidence answer retains database-only retrieval, citation validation and insufficient-evidence gaps. Classification is model-based and can make mistakes; mocked routing tests verify enforcement given a classification, not perfect natural-language understanding.
+
+`chat-shell` uses the viewport height with a flex layout; its message area and saved navigation can scroll while the composer remains visible. Knowledge Updates retains normal document scrolling. Motion is CSS-based and disabled for reduced-motion preferences. Long captured-document comparisons begin collapsed to keep review manageable. No animation package or new frontend runtime dependency was introduced.
+
+
+### Seven-emirate reference coverage — 5 November 2026
+
+- Seven selectable mainland IT/software profiles, each with two registered official references: federal guidance and an emirate-specific guide or services page.
+- Existing Dubai source IDs and approvals are preserved; new source IDs include the profile so shared federal URLs cannot mix evidence between emirates.
+- Run `cd backend` then `python -m scripts.setup_db` after activating the virtual environment to register all 14 links in Atlas. This does not fetch documents, call OpenAI, or approve evidence. No new collections are needed.
+- Sync and review each emirate manually in Knowledge Updates before expecting an evidence-backed checklist. Uncaptured or insufficient evidence remains a gap.
+- RAK uses its official government business-services directory; Umm Al Quwain uses its DED services catalogue. These are starting references, not verified complete software-licensing instructions. Both sites timed out during live verification; capture may fail and require replacement with a reachable official service page.
+
+
+### Visual workspace — 9 November 2026
+
+The interface uses mint/sage backgrounds, white surfaces and deep teal controls based on the supplied reference. A shared desktop rail width and floating bottom dock replace the top navigation. Chat remains viewport bounded; Knowledge Updates uses document scrolling.
+
+`PermitSculpture` uses perspective and translateZ layers for genuine CSS 3D depth without adding a WebGL runtime or external animation service. The welcome carousel cycles every 6.5 seconds, pauses on explicit user control or hidden tabs, and remains manual when reduced motion is enabled. Source-map nodes are derived from actual source records and select their corresponding native details accordions; the graph does not invent search results or progress. Workspace and disclosure transitions respect reduced motion.
+
+
+### Final visual theme
+
+Pearl & Iris is the permanent theme, with shared semantic tokens in `frontend/src/styles/theme.css`. The temporary palette comparison controls and preference storage were removed; old saved preferences no longer affect the app.
+
+
+## Grounded generation schema and source labels — 11 November 2026
+
+The generic GeneratedAnswer schema previously allowed arbitrary evidence ID strings and empty checklist arrays; validation rejected those only after generation. Generation now uses a per-retrieval schema whose citation values are restricted to the retrieved IDs. Its nested answer union permits either a non-empty cited checklist or an empty-item gap/follow-up. The root stays an object, as required by Structured Outputs. LanguageModel.answer unwraps the internal envelope so the HTTP response and stored conversation format remain unchanged. There is no new automatic repair/generation call. The server validator still rejects uncited/unknown items and rechecks approved versions after generation. Diagnostic logs record reason names and counts, not evidence, conversation text or model-provided IDs.
+
+The prior failed model output was not retained, so its exact failing condition cannot be identified retroactively. A read-only check found two approved Dubai versions and 14 non-empty chunks with the configured embedding model. The live provider check was not run because automatic approval review rejected exporting the stored payload for a paid request without specific approval. Verification uses isolated mocks, including the actual SDK serialization/parsing boundary; all 89 backend tests passed. No Mongo records or embedding indexes need migration for this change.
+
+Schema reference: https://developers.openai.com/api/docs/guides/structured-outputs
+
+Source labels are derived locally: meaningful registered title, then a title from an already-loaded captured version, then a decoded/humanized useful URL path segment, then the hostname. Original URLs remain unchanged. Search uses the visible derived title as well as the URL. No extra provider or database request is introduced.
+
+Glass's Failed filter reflects last_capture_status=failed. Published reflects an available approved version; a source can legitimately match both if its latest fetch failed while earlier approved evidence remains usable.
+
+Sync without discovery fetches registered official URLs and compares captures. Unchanged content skips summary and embedding generation; changed/new content can generate a summary and missing embeddings and is staged for review. Discovery adds a web-search registration step before that same capture pipeline.
