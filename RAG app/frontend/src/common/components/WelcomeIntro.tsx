@@ -4,7 +4,15 @@ import { EvidenceJourney } from './EvidenceJourney';
 import './WelcomeIntro.css';
 
 // Give every new conversation one clear starting point without extra cards or instructions.
-export function WelcomeIntro({ onPrompt, visual, description = 'Reviewed guidance for UAE mainland IT.' }: { onPrompt: (message: string) => void; visual?: ReactNode; description?: string }) {
+export function WelcomeIntro({
+  onPrompt,
+  visual,
+  description = 'Reviewed guidance for UAE mainland IT.',
+}: {
+  onPrompt: (message: string) => void;
+  visual?: ReactNode;
+  description?: string;
+}) {
   return (
     <section className="welcome-intro" aria-label="Start a conversation">
       {visual ?? <EvidenceJourney compact showLabels={false} />}
