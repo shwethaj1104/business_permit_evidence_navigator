@@ -70,6 +70,7 @@ class LanguageModel:
         vectors = []
         try:
             for start in range(0, len(texts), 32):
+                # Actual OpenAI embedding request; used by chat retrieval and sync ingestion.
                 response = self.client.embeddings.create(
                     model=self.settings.embedding_model,
                     dimensions=self.settings.embedding_dimensions,
@@ -85,6 +86,7 @@ class LanguageModel:
     def structured(self, schema, instructions, data):
         # Parse schema-constrained output with no tools attached to the request.
         try:
+            # Actual OpenAI generation request; called by answer, classify_intent and summarize in this file.
             response = self.client.responses.parse(
                 model=self.settings.model,
                 **generation_options(self.settings.model),

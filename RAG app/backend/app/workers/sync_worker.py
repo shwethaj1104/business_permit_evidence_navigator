@@ -78,6 +78,7 @@ def run(job_id=None, once=False):
                 thread.start()
                 try:
                     with log_context(job_id=job.id):
+                        # Ingestion workflow: app/services/ingestion/sync_service.py -> SyncService.process -> ingest.
                         services.sync.process(job, owner, lambda lost=lost: not lost.is_set())
                 except Exception as exc:  # noqa: BLE001 - a failed job must not terminate the worker
                     exit_code = 1
