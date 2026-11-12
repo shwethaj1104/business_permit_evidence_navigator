@@ -156,7 +156,9 @@ class ChatService:
                 gaps=["No approved source versions."],
                 citations=[],
             )
+        # OpenAI embeddings request: app/integrations/openai/client.py -> LanguageModel.embed.
         vector = self.model.embed([question])[0]
+        # Atlas hybrid retrieval: app/repositories/knowledge_repository.py -> KnowledgeRepository.retrieve.
         evidence = self.knowledge.retrieve(profile.id, vector, question)
         if not evidence:
             return AnswerResponse(
@@ -167,10 +169,12 @@ class ChatService:
                 citations=[],
             )
         passages = [{"id": row.id, "text": row.text, "locator": row.locator} for row in evidence]
+        # LLM generation: app/integrations/openai/client.py -> LanguageModel.answer -> structured.
         generated = self.model.answer(profile, question, passages, history)
         return validate_answer(generated, evidence, self.knowledge)
 
 
+# Require citations on checklist items, match IDs to retrieved chunks, and recheck cited versions are active.
 def validate_answer(generated, evidence, knowledge):
     # Reject unsupported citation IDs and recheck active versions after generation.
     by_id = {row.id: row for row in evidence}

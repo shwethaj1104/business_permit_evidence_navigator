@@ -31,6 +31,7 @@ class SyncService:
         logger.info("event=job_enqueued job_id=%s discover=%s", job.id, request.discover)
         if self.dispatcher and self.jobs.reserve_dispatch(job.id):
             try:
+                # Azure launch: app/integrations/azure_jobs.py -> AzureJobDispatcher.start; runs app/workers/sync_worker.py.
                 self.dispatcher.start(job.id)
             except Exception as exc:
                 log_failure("sync.dispatch", exc, job_id=job.id)
@@ -99,6 +100,7 @@ class SyncService:
         if job.discover and not any(row.get("url") == "discovery" for row in outcomes):
             try:
                 discovered = []
+                # Web-search tool request: app/integrations/official_sources/discovery.py -> OfficialDiscovery.discover.
                 for row in self.discovery.discover(profile):
                     try:
                         validate_url(row["url"], resolve=False)
@@ -142,6 +144,7 @@ class SyncService:
     def ingest(self, source, lease_alive):
         # Skip unchanged text and stage changed evidence before review.
         self.knowledge.checked(source.id)
+        # Website download: app/integrations/official_sources/fetcher.py -> SourceFetcher.fetch (no LLM).
         raw, content_type, final_url = self.fetcher.fetch(source.url)
         fetched_at = utcnow()
         document = extract(raw, content_type)
@@ -162,6 +165,7 @@ class SyncService:
         reused = self.knowledge.embeddings_for([chunk["content_hash"] for chunk in chunks])
         missing = [chunk for chunk in chunks if chunk["content_hash"] not in reused]
         if missing:
+            # Embeddings request: app/integrations/openai/client.py -> LanguageModel.embed.
             vectors = self.model.embed([chunk["text"] for chunk in missing])
             reused.update(
                 {chunk["content_hash"]: vector for chunk, vector in zip(missing, vectors, strict=True)}
@@ -197,6 +201,7 @@ class SyncService:
                 lineterm="",
             )
         )
+        # Summary LLM request: app/integrations/openai/client.py -> LanguageModel.summarize -> structured.
         summary = self.model.summarize(diff or "Only explicit source date metadata changed.")
         if not lease_alive():
             raise AppError("Worker lease lost before publication staging.", 409)
